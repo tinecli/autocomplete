@@ -1,0 +1,46 @@
+name: Spec pack
+
+# Build the completion specs and publish them as a rolling release asset
+# (fixed tag: `specs`) that tine downloads at runtime — so spec fixes ship
+# without a tine app release. Run from the Actions tab (workflow_dispatch).
+#
+# tine downloads:
+#   https://github.com/tinecli/autocomplete/releases/download/specs/specs.tar.gz
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  pack:
+    name: Build & publish spec pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      # node for the `npx @withfig/autocomplete-tools compile` in the build script
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: bun install --frozen-lockfile || bun install
+
+      # Compiles src/ -> build/ (self-contained minified tiles + build/index.json).
+      - run: bun run build
+
+      # The loadable pack is just the spec tiles + the index.
+      - name: Tarball
+        run: |
+          cd build
+          find . \( -name '*.js' -o -name 'index.json' \) -print0 | tar --null -czf ../specs.tar.gz -T -
+
+      - name: Publish rolling 'specs' release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release delete specs --yes --cleanup-tag 2>/dev/null || true
+          gh release create specs specs.tar.gz \
+            --title "tine completion spec pack" \
+            --notes "Downloaded by tine at runtime. $(du -h specs.tar.gz | cut -f1) · built $(date -u +%Y-%m-%dT%H:%MZ)."
