@@ -20,6 +20,7 @@ const completionSpec: Fig.Spec = {
     {
       name: "--profile",
       description: "Use a specific profile from your credential file",
+      isPersistent: true,
       args: {
         generators: awsProfileGenerator,
         filterStrategy: "fuzzy",
