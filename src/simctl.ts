@@ -1,5 +1,3 @@
-import { describe } from "node:test";
-
 const completionSpec: Fig.Spec = {
   name: "simctl",
   description: "",
