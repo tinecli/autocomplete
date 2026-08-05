@@ -34,7 +34,7 @@ Before opening a PR:
 
 ```bash
 pnpm test       # tsc --noEmit across all of src/
-pnpm lint:fix   # eslint --fix + prettier --write
+pnpm lint:fix   # biome check --write (lint + format, one tool)
 ```
 
 ### Conventions that aren't obvious from one file
