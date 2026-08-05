@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "outDir": "./build",
     "target": "ES2018",
     "module": "ESNext",
@@ -10,10 +10,10 @@
     ],
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
     "types": [
       "@withfig/autocomplete-types"
-    ]
+    ],
+    "strict": false
   },
   "exclude": [
     "node_modules/"
