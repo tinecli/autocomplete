@@ -12,7 +12,7 @@ const targetGenerator: Fig.Generator = {
     ttl: 1000 * 60, // Only caches targets for one minute, in case a new device is connected
   },
   custom: async (tokens, executeShellCommand) => {
-    const [cliName, command, platform] = tokens;
+    const [_cliName, _command, platform] = tokens;
     if (!isPlatform(platform)) {
       return [];
     }

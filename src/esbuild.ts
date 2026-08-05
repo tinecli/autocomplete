@@ -16,7 +16,7 @@ const extensions: Fig.Generator["custom"] = async (_, executeShellCommand) => {
   const lines = stdout.trim().split("\n");
   return lines
     .filter((line) => !ignoreExtensions.has(line))
-    .map((line) => ({ name: "." + line }));
+    .map((line) => ({ name: `.${line}` }));
 };
 
 const spec: Fig.Spec = {

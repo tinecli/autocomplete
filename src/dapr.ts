@@ -2,7 +2,7 @@ import { filepaths } from "@fig/autocomplete-generators";
 
 const runningAppsGenerator: Fig.Generator = {
   script: ["dapr", "list", "-A", "-o", "json"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       const appList = JSON.parse(out);
       return appList.map((app) => {
@@ -21,7 +21,7 @@ const runtimeVersionsGenerator: Fig.Generator = {
   cache: {
     ttl: 1000 * 60 * 60 * 24 * 2, // 2 days
   },
-  custom: async (context, executeShellCommand): Promise<Fig.Suggestion[]> => {
+  custom: async (_context, executeShellCommand): Promise<Fig.Suggestion[]> => {
     const queryVersions = [
       "-s",
       "-H",

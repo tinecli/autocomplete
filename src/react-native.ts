@@ -82,7 +82,7 @@ const iosGetDevicesGenerator = {
       .split("\n")
       .filter((item) => !item.match(/^=/))
       .filter(Boolean)
-      .map((item) => item.split(/\([\w\d\-]+\)$/))
+      .map((item) => item.split(/\([\w\d-]+\)$/))
       .map(([name]) => ({ name: name.trim() }));
 
     return devices;
@@ -111,7 +111,7 @@ const gradleTasksGenerator: Fig.Generator = {
   postProcess: (scriptOutput: string) => {
     const tasks = scriptOutput
       .split("\n")
-      .filter((item) => item.match(/^\w+ \- |\*/))
+      .filter((item) => item.match(/^\w+ - |\*/))
       .map((item) => item.split(" - "))
       .map(([name, description]) => ({ name, description }));
     return tasks;

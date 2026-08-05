@@ -1,5 +1,5 @@
 const listTargets: Fig.Generator = {
-  custom: async (tokens, executeShellCommand) => {
+  custom: async (_tokens, executeShellCommand) => {
     // Plain target suggestions. These will be overridden if we can find a description for them.
     const { stdout } = await executeShellCommand({
       command: "bash",

@@ -2444,11 +2444,10 @@ const completionSpec: Fig.Spec = {
             "-c",
             "ykman list | sed -rn 's/.*Serial: (.*)/\\1/p'",
           ],
-          postProcess: function (out) {
-            return out.split("\n").map((serial) => {
+          postProcess: (out) =>
+            out.split("\n").map((serial) => {
               return { name: serial, description: "Yubikey serial" };
-            });
-          },
+            }),
         },
       },
     },
@@ -2461,11 +2460,10 @@ const completionSpec: Fig.Spec = {
         name: "NAME",
         generators: {
           script: ["ykman", "list", "--readers"],
-          postProcess: function (out) {
-            return out.split("\n").map((readerName) => {
+          postProcess: (out) =>
+            out.split("\n").map((readerName) => {
               return { name: readerName, description: "Yubikey name" };
-            });
-          },
+            }),
         },
       },
     },

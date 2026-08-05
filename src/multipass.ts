@@ -50,7 +50,7 @@ const multipassGenerators: Record<string, Fig.Generator> = {
       return Object.keys(images).map((key) => {
         return {
           name: key,
-          description: images[key].os + " " + images[key].release,
+          description: `${images[key].os} ${images[key].release}`,
         };
       });
     },

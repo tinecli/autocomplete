@@ -26,10 +26,9 @@
     "dev": "npx @withfig/autocomplete-tools dev",
     "create-spec": "npx @withfig/autocomplete-tools create-spec",
     "build": "npx @withfig/autocomplete-tools compile",
-    "lint": "eslint '**/*.ts' && npx prettier --check '**/*.ts' --parser typescript",
-    "lint:fix": "eslint '**/*.ts' --fix && npx prettier --write '**/*.ts' --parser typescript",
-    "test": "tsc --noEmit && echo 'All specs passed validation. You are ready to push!'",
-    "prepare": "husky"
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "tsc --noEmit && echo 'All specs passed validation. You are ready to push!'"
   },
   "fig": {
     "dev": {
@@ -51,19 +50,7 @@
     },
     "test": {
       "description": "Typecheck all .ts files in /src"
-    },
-    "prepare": {
-      "description": "Install husky"
     }
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "printWidth": 80
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix"
-    ]
   },
   "files": [
     "build/**/*.js",
@@ -78,16 +65,9 @@
   "bugs": "https://github.com/tinecli/autocomplete/issues",
   "repository": "https://github.com/tinecli/autocomplete",
   "devDependencies": {
-    "@fig/eslint-config-autocomplete": "^2.0.0",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
+    "@biomejs/biome": "2.5.7",
     "@withfig/autocomplete-tools": "^2.11.0",
     "@withfig/autocomplete-types": "^1.31.0",
-    "eslint": "^8.57.1",
-    "eslint-plugin-compat": "4.2.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.3.0",
-    "prettier": "^3.4.2",
     "typescript": "~5.5.4"
   },
   "dependencies": {

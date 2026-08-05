@@ -3,7 +3,7 @@ const warpPointsGenerator: Fig.Generator = {
     const { stdout } = await executeCommand({
       command: "cat",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
-      args: [`${context.environmentVariables["HOME"]}/.warprc`],
+      args: [`${context.environmentVariables.HOME}/.warprc`],
     });
 
     // find all warp points names

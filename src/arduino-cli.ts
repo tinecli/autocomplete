@@ -12,7 +12,7 @@ const FQBNs: Fig.Generator = {
         }));
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       return [];
     }
   },
@@ -31,7 +31,7 @@ const Ports: Fig.Generator = {
         }));
 
       return result;
-    } catch (error) {
+    } catch (_error) {
       return [];
     }
   },

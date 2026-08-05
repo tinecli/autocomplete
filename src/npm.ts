@@ -19,7 +19,7 @@ export const createNpmSearchHandler =
   async (
     context: string[],
     executeShellCommand: Fig.ExecuteCommandFunction,
-    shellContext: Fig.ShellContext
+    _shellContext: Fig.ShellContext
   ): Promise<Fig.Suggestion[]> => {
     const searchTerm = context[context.length - 1];
     if (searchTerm === "") {
@@ -117,7 +117,7 @@ export const npmSearchGenerator: Fig.Generator = {
 
 const workspaceGenerator: Fig.Generator = {
   // script: "cat $(npm prefix)/package.json",
-  custom: async (tokens, executeShellCommand) => {
+  custom: async (_tokens, executeShellCommand) => {
     const { stdout: npmPrefix } = await executeShellCommand({
       command: "npm",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
@@ -132,12 +132,12 @@ const workspaceGenerator: Fig.Generator = {
 
     const suggestions: Fig.Suggestion[] = [];
     try {
-      if (out.trim() == "") {
+      if (out.trim() === "") {
         return suggestions;
       }
 
       const packageContent = JSON.parse(out);
-      const workspaces = packageContent["workspaces"];
+      const workspaces = packageContent.workspaces;
 
       if (workspaces) {
         for (const workspace of workspaces) {
@@ -157,7 +157,7 @@ const workspaceGenerator: Fig.Generator = {
 /** Generator that lists package.json dependencies */
 export const dependenciesGenerator: Fig.Generator = {
   trigger: (newToken) => newToken === "-g" || newToken === "--global",
-  custom: async function (tokens, executeShellCommand) {
+  custom: async (tokens, executeShellCommand) => {
     if (!tokens.includes("-g") && !tokens.includes("--global")) {
       const { stdout: npmPrefix } = await executeShellCommand({
         command: "npm",
@@ -170,9 +170,9 @@ export const dependenciesGenerator: Fig.Generator = {
         args: [`${npmPrefix}/package.json`],
       });
       const packageContent = JSON.parse(out);
-      const dependencies = packageContent["dependencies"] ?? {};
-      const devDependencies = packageContent["devDependencies"];
-      const optionalDependencies = packageContent["optionalDependencies"] ?? {};
+      const dependencies = packageContent.dependencies ?? {};
+      const devDependencies = packageContent.devDependencies;
+      const optionalDependencies = packageContent.optionalDependencies ?? {};
       Object.assign(dependencies, devDependencies, optionalDependencies);
 
       return Object.keys(dependencies)
@@ -214,15 +214,15 @@ export const npmScriptsGenerator: Fig.Generator = {
     "-c",
     "until [[ -f package.json ]] || [[ $PWD = '/' ]]; do cd ..; done; cat package.json",
   ],
-  postProcess: function (out, [npmClient]) {
-    if (out.trim() == "") {
+  postProcess: (out, [npmClient]) => {
+    if (out.trim() === "") {
       return [];
     }
 
     try {
       const packageContent = JSON.parse(out);
-      const scripts = packageContent["scripts"];
-      const figCompletions = packageContent["fig"] || {};
+      const scripts = packageContent.scripts;
+      const figCompletions = packageContent.fig || {};
 
       if (scripts) {
         return Object.entries(scripts).map(([scriptName, scriptContents]) => {

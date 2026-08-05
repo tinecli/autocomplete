@@ -5,8 +5,8 @@ import { filepaths } from "@fig/autocomplete-generators";
 const flutterGenerators: Record<string, Fig.Generator> = {
   emulators: {
     script: ["flutter", "emulators"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .match(/.*•.*/gi)
         .map((info) => info.split("•"))
         .map((deviceInfo) => deviceInfo.map((info) => info.trim()))
@@ -15,8 +15,7 @@ const flutterGenerators: Record<string, Fig.Generator> = {
           icon: "📱",
           description: "Available emulators",
           insertValue: device[0],
-        }));
-    },
+        })),
   },
   dartFiles: filepaths({ extensions: ["dart"] }),
 };
@@ -43,7 +42,7 @@ const deviceId = {
   },
 };
 
-const version = {
+const _version = {
   name: "--version",
   description: "Reports the version of this tool",
 };
@@ -164,7 +163,7 @@ const testAssets = [
   },
 ];
 
-const uninstallOnly = [
+const _uninstallOnly = [
   {
     name: "--uninstall-only",
     description: "Uninstall the app if already on the device. Skip install",
@@ -209,7 +208,7 @@ const requiredResourceAttributes = [
   },
 ];
 
-const startPaused = [
+const _startPaused = [
   {
     name: "--start-paused",
     description: "Start in a paused mode and wait for a debugger to connect",
@@ -285,7 +284,7 @@ const useTestFonts = [
   },
 ];
 
-const hot = [
+const _hot = [
   {
     name: "--hot",
     description:
@@ -864,8 +863,8 @@ const completionSpec = {
           "Switch to <channel name>. Leave this blank to see available channels",
         generators: {
           script: ["flutter", "channel"],
-          postProcess: function (out) {
-            return out
+          postProcess: (out) =>
+            out
               .split("\n")
               .filter((channel) => channel.match(/\w+$/))
               .map((channel) => ({
@@ -877,8 +876,7 @@ const completionSpec = {
                 icon: "🐦",
                 description: "Available channels",
                 insertValue: channel.name,
-              }));
-          },
+              })),
         },
       },
     },

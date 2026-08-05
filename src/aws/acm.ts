@@ -61,7 +61,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dotsArr = [];
     const otherArr = [];
     arr.map((elm) => {
-      if (elm.toLowerCase() == ".ds_store") return;
+      if (elm.toLowerCase() === ".ds_store") return;
       if (elm.slice(0, 1) === ".") dotsArr.push(elm);
       else otherArr.push(elm);
     });

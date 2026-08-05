@@ -1,6 +1,6 @@
 const getInstalledPackages: Fig.Generator = {
   script: ["conda", "list"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const installedPackages = [];
     for (let i = 3; i < lines.length; i++) {
@@ -45,11 +45,11 @@ const getCondaEnvironments: Fig.Generator = {
     ttl: 10000,
     strategy: "stale-while-revalidate",
   },
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const installedPackages: Fig.Suggestion[] = [];
     for (let i = 2; i < lines.length; i++) {
-      var env_name = lines[i].split(" ")[0];
+      const env_name = lines[i].split(" ")[0];
       installedPackages.push({
         name: env_name,
         icon: "🐍",
@@ -61,12 +61,12 @@ const getCondaEnvironments: Fig.Generator = {
 
 const getCondaConfigs: Fig.Generator = {
   script: ["conda", "config", "--show"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const configs: Fig.Suggestion[] = [];
     for (let i = 2; i < lines.length; i++) {
-      var config_name = lines[i].split(":")[0];
-      if (config_name.includes("-") == false) {
+      const config_name = lines[i].split(":")[0];
+      if (config_name.includes("-") === false) {
         configs.push({
           name: config_name,
           icon: "🐍",

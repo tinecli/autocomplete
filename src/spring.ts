@@ -47,7 +47,7 @@ const memoizedFetchData = () => {
       });
       data = JSON.parse(stdout);
       return data;
-    } catch (error) {
+    } catch (_error) {
       return undefined;
     }
   };

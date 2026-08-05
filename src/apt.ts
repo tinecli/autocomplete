@@ -36,8 +36,8 @@ const packages: Fig.Generator = {
 
 const installedPackages: Fig.Generator = {
   script: ["apt", "list", "--installed"],
-  postProcess: function (a) {
-    return a
+  postProcess: (a) =>
+    a
       .trim()
       .split("\n")
       .map((b) => {
@@ -46,14 +46,13 @@ const installedPackages: Fig.Generator = {
           description: "Package",
           icon: "📦",
         };
-      });
-  },
+      }),
 };
 
 const upgradablePackages: Fig.Generator = {
   script: ["apt", "list", "--upgradable"],
-  postProcess: function (a) {
-    return a
+  postProcess: (a) =>
+    a
       .trim()
       .split("\n")
       .map((b) => {
@@ -62,8 +61,7 @@ const upgradablePackages: Fig.Generator = {
           description: "Package",
           icon: "📦",
         };
-      });
-  },
+      }),
 };
 
 const yesNoOptions: Fig.Option[] = [

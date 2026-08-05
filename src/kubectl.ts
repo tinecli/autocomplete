@@ -1,9 +1,13 @@
 // Internal scripts for this spec, not to be confused with the script property
 const scripts = {
   types: ["kubectl", "api-resources", "-o", "name"],
-  typeWithoutName: function (type) {
-    return ["kubectl", "get", type, "-o", "custom-columns=:.metadata.name"];
-  },
+  typeWithoutName: (type) => [
+    "kubectl",
+    "get",
+    type,
+    "-o",
+    "custom-columns=:.metadata.name",
+  ],
 };
 
 const sharedPostProcessChecks = {
@@ -57,7 +61,7 @@ const sharedArgs: Record<string, Fig.Arg> = {
   resourceSuggestionsFromResourceType: {
     name: "Resource",
     generators: {
-      script: function (context) {
+      script: (context) => {
         const resourceType = context[context.length - 2];
         return scripts.typeWithoutName(resourceType);
       },
@@ -72,7 +76,7 @@ const sharedArgs: Record<string, Fig.Arg> = {
   listKubeConfContexts: {
     name: "Context",
     generators: {
-      script: function (context) {
+      script: (context) => {
         const index = context.indexOf("--kubeconfig");
         if (index !== -1) {
           return [
@@ -103,7 +107,7 @@ const sharedArgs: Record<string, Fig.Arg> = {
   listClusters: {
     name: "Cluster",
     generators: {
-      script: function (context) {
+      script: (context) => {
         const index = context.indexOf("--kubeconfig");
         if (index !== -1) {
           return [
@@ -115,7 +119,7 @@ const sharedArgs: Record<string, Fig.Arg> = {
         }
         return ["kubectl", "config", "get-clusters"];
       },
-      postProcess: function (out) {
+      postProcess: (out) => {
         if (
           sharedPostProcessChecks.connectedToCluster(out) ||
           sharedPostProcessChecks.generalError(out)
@@ -135,7 +139,7 @@ const sharedArgs: Record<string, Fig.Arg> = {
   typeOrTypeSlashName: {
     name: "TYPE | TYPE/NAME",
     generators: {
-      script: function (context) {
+      script: (context) => {
         const lastInput = context[context.length - 1];
         if (lastInput.includes("/")) {
           return scripts.typeWithoutName(
@@ -191,7 +195,7 @@ const sharedArgs: Record<string, Fig.Arg> = {
           : `${context[podIndex]} + ${context[podIndex + 1]}`;
         return ["kubectl", "get", podName, "-o", "json"];
       },
-      postProcess: function (out) {
+      postProcess: (out) => {
         if (
           sharedPostProcessChecks.connectedToCluster(out) ||
           sharedPostProcessChecks.generalError(out)

@@ -119,7 +119,7 @@ function getRecipeSuggestions(
 
     suggestions.push({
       name,
-      insertValue: recipe.parameters.length === 0 ? name : name + " ",
+      insertValue: recipe.parameters.length === 0 ? name : `${name} `,
       displayName: showRecipeParameters ? getRecipeUsage(recipe) : name,
       description: recipe.doc ?? "Recipe",
       icon: "fig://icon?type=command",

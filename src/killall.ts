@@ -62,7 +62,7 @@ const completionSpec: Fig.Spec = {
                   ? 51
                   : 40,
               icon: isApp
-                ? "fig://" + path.slice(0, appExtIndex + 4)
+                ? `fig://${path.slice(0, appExtIndex + 4)}`
                 : "fig://icon?type=gear",
             };
           }),
@@ -103,7 +103,7 @@ const completionSpec: Fig.Spec = {
       description: "Be verbose (dry run)",
     },
     ...signals.map((signal) => ({
-      name: "-SIG" + signal.toUpperCase(),
+      name: `-SIG${signal.toUpperCase()}`,
       description: `Send ${signal.toUpperCase()} instead of TERM`,
     })),
     {

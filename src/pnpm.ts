@@ -11,7 +11,7 @@ const filterMessages = (out: string): string => {
 
 const searchBranches: Fig.Generator = {
   script: ["git", "branch", "--no-color"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const output = filterMessages(out);
 
     if (output.startsWith("fatal:")) {
@@ -22,14 +22,14 @@ const searchBranches: Fig.Generator = {
       let name = elm.trim();
       const parts = elm.match(/\S+/g);
       if (parts && parts.length > 1) {
-        if (parts[0] == "*") {
+        if (parts[0] === "*") {
           // Current branch.
           return {
             name: elm.replace("*", "").trim(),
             description: "Current branch",
             icon: "⭐️",
           };
-        } else if (parts[0] == "+") {
+        } else if (parts[0] === "+") {
           // Branch checked out in another worktree.
           name = elm.replace("+", "").trim();
         }
@@ -46,7 +46,7 @@ const searchBranches: Fig.Generator = {
 
 const generatorInstalledPackages: Fig.Generator = {
   script: ["pnpm", "ls"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     /**
      * out
      * @example

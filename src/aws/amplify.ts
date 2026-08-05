@@ -110,7 +110,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dotsArr = [];
     const otherArr = [];
     arr.map((elm) => {
-      if (elm.toLowerCase() == ".ds_store") return;
+      if (elm.toLowerCase() === ".ds_store") return;
       if (elm.slice(0, 1) === ".") dotsArr.push(elm);
       else otherArr.push(elm);
     });
@@ -168,21 +168,21 @@ const generators: Record<string, Fig.Generator> = {
     script: ["aws", "iam", "list-roles"],
     postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["Roles"];
+        const list = JSON.parse(out).Roles;
         return list
           .filter((elm) => {
-            const policyDocument = elm["AssumeRolePolicyDocument"];
-            const statement = policyDocument["Statement"];
+            const policyDocument = elm.AssumeRolePolicyDocument;
+            const statement = policyDocument.Statement;
             // Only collect IAM roles where the principal service
             // is Amplify
             if (statement.length > 0) {
-              const service = statement[0]["Principal"]["Service"];
+              const service = statement[0].Principal.Service;
               return service === "amplify.amazonaws.com";
             }
             return false;
           })
           .map((elm) => ({
-            name: elm["Arn"],
+            name: elm.Arn,
             icon: "fig://icon?type=aws",
           }));
       } catch (e) {
@@ -210,64 +210,59 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listEnvironmentNames: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-backend-environments",
         ["--app-id"],
         "backendEnvironments",
         "environmentName"
-      );
-    },
+      ),
   },
   listEnvironmentArns: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-backend-environments",
         ["--app-id"],
         "backendEnvironments",
         "backendEnvironmentArn"
-      );
-    },
+      ),
   },
   listBranchNames: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-branches",
         ["--app-id"],
         "branches",
         "branchName"
-      );
-    },
+      ),
   },
   listFrameworkForApp: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-branches",
         ["--app-id"],
         "branches",
         "framework"
-      );
-    },
+      ),
   },
   listBuildSpecForApp: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-branches",
         ["--app-id"],
         "branches",
         "buildSpec"
-      );
-    },
+      ),
   },
   listIamRoleArns: {
     script: ["aws", "iam", "list-roles"],
@@ -276,28 +271,26 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listDomainNames: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-domain-associations",
         ["--app-id"],
         "domainAssociations",
         "domainName"
-      );
-    },
+      ),
   },
   listJobIds: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         "list-jobs",
         ["--app-id", "--branch-name"],
         "jobSummaries",
         "jobId"
-      );
-    },
+      ),
   },
   listWebhookIds: {
     script: ["aws", "amplify", "list-webhooks"],
@@ -309,12 +302,12 @@ const generators: Record<string, Fig.Generator> = {
     script: ["aws", "amplify", "list-apps"],
     postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["Roles"];
+        const list = JSON.parse(out).Roles;
         return list.map((elm) => {
-          const prodBranch = elm["productionBranch"];
+          const prodBranch = elm.productionBranch;
           if (prodBranch) {
             return {
-              name: prodBranch["branchName"],
+              name: prodBranch.branchName,
               icon: "fig://icon?type=aws",
             };
           }

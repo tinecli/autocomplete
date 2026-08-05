@@ -27,7 +27,7 @@ const allPluginNamesGenerator = (
       command: "ls",
       args: [
         "-1",
-        `${generatorContext.environmentVariables["HOME"]}/.asdf/repository/plugins`,
+        `${generatorContext.environmentVariables.HOME}/.asdf/repository/plugins`,
       ],
     });
 
@@ -95,10 +95,7 @@ const shimNamesGenerator = (
   custom: async (_, executeCommand, generatorContext) => {
     const { stdout } = await executeCommand({
       command: "ls",
-      args: [
-        "-1",
-        `${generatorContext.environmentVariables["HOME"]}/.asdf/shims`,
-      ],
+      args: ["-1", `${generatorContext.environmentVariables.HOME}/.asdf/shims`],
     });
     return stdout.split("\n").map((shimName) => ({
       name: `${shimName}`,

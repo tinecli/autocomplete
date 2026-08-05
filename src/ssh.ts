@@ -58,7 +58,7 @@ export const knownHosts: Fig.Generator = {
     const { stdout } = await executeCommand({
       command: "cat",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
-      args: [`${context.environmentVariables["HOME"]}/.ssh/known_hosts`],
+      args: [`${context.environmentVariables.HOME}/.ssh/known_hosts`],
     });
 
     return stdout
@@ -79,11 +79,11 @@ export const knownHosts: Fig.Generator = {
 };
 
 export const configHosts: Fig.Generator = {
-  custom: async (tokens, executeShellCommand, context) => {
+  custom: async (_tokens, executeShellCommand, context) => {
     const configLines = await getConfigLines(
       "config",
       executeShellCommand,
-      context.environmentVariables["HOME"],
+      context.environmentVariables.HOME,
       "~/.ssh"
     );
 

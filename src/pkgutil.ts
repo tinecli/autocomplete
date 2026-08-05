@@ -11,7 +11,7 @@ const postProcessPkgFilenames =
       if (line.startsWith(pathPrefix)) {
         const result = line.replace(pathPrefix, "").split("/")[0];
         if (result) {
-          names.add(result + "/");
+          names.add(`${result}/`);
         }
       }
     });
@@ -26,11 +26,10 @@ export const pkgutilGenerators: Record<string, Fig.Generator> = {
   // BOM files
   bom: {
     script: ["find", ".", "-type", "f", "-name", "*.bom", "-maxdepth", "1"],
-    postProcess: function (out) {
-      return out.split("\n").map((filepath) => ({
+    postProcess: (out) =>
+      out.split("\n").map((filepath) => ({
         name: filepath.replace("./", ""),
-      }));
-    },
+      })),
   },
   // Installed package ids
   packageIds: {
@@ -40,11 +39,10 @@ export const pkgutilGenerators: Record<string, Fig.Generator> = {
   // .pkg files
   pkgs: {
     script: ["find", ".", "-type", "f", "-name", "*.pkg", "-maxdepth", "1"],
-    postProcess: function (out) {
-      return out.split("\n").map((filepath) => ({
+    postProcess: (out) =>
+      out.split("\n").map((filepath) => ({
         name: filepath.replace("./", ""),
-      }));
-    },
+      })),
   },
   // group ids
   groupIds: {

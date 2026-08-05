@@ -35,7 +35,7 @@ const postProcessQuery =
 
 const dscacheutilGenerators: Record<string, Fig.Generator> = {
   keys: {
-    custom: async (tokens, executeShellCommand) => {
+    custom: async (tokens, _executeShellCommand) => {
       const category = tokens[tokens.length - 3];
       if (!categories.includes(category)) {
         return [];

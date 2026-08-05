@@ -1,4 +1,5 @@
 import { filepaths } from "@fig/autocomplete-generators";
+
 const completionSpec: Fig.Spec = {
   name: "java",
   description: "Launch a Java application",

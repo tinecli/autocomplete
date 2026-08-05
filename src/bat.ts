@@ -17,7 +17,7 @@ const completionSpec: Fig.Spec = {
         name: "<language>",
         generators: {
           script: ["bat", "--list-languages"],
-          postProcess: function (out) {
+          postProcess: (out) => {
             // unpack 2-dimension array
             return out
               .split("\n")
@@ -25,12 +25,12 @@ const completionSpec: Fig.Spec = {
                 const langLine = outLine.split(":");
                 const descriptionString = langLine[0].trim();
                 return outLine
-                  .replace(/\:/g, ",")
+                  .replace(/:/g, ",")
                   .split(",")
                   .map((item) => {
                     return {
                       name: item.trim(),
-                      description: descriptionString + " language",
+                      description: `${descriptionString} language`,
                     };
                   });
               })
@@ -91,8 +91,8 @@ const completionSpec: Fig.Spec = {
             "-c",
             "bat --wrap unknow 2>&1 >/dev/null | grep possible",
           ],
-          postProcess: function (out) {
-            return out
+          postProcess: (out) =>
+            out
               .trim()
               .split("]")[0]
               .split("[")[1]
@@ -103,8 +103,7 @@ const completionSpec: Fig.Spec = {
                   name: mode.trim(),
                   description: "Specify when to use colored output",
                 };
-              });
-          },
+              }),
         },
       },
     },
@@ -132,8 +131,8 @@ const completionSpec: Fig.Spec = {
             "-c",
             "bat --color unknow  2>&1 >/dev/null | grep possible",
           ],
-          postProcess: function (out) {
-            return out
+          postProcess: (out) =>
+            out
               .trim()
               .split("]")[0]
               .split("[")[1]
@@ -144,8 +143,7 @@ const completionSpec: Fig.Spec = {
                   name: mode.trim(),
                   description: "Specify when to use colored output",
                 };
-              });
-          },
+              }),
         },
       },
     },
@@ -161,8 +159,8 @@ const completionSpec: Fig.Spec = {
             "-c",
             "bat --italic-text unknow 2>&1 >/dev/null | grep possible",
           ],
-          postProcess: function (out) {
-            return out
+          postProcess: (out) =>
+            out
               .trim()
               .split("]")[0]
               .split("[")[1]
@@ -174,8 +172,7 @@ const completionSpec: Fig.Spec = {
                   description:
                     "Specify when to use ANSI sequences for italic text in the output",
                 };
-              });
-          },
+              }),
         },
       },
     },
@@ -191,8 +188,8 @@ const completionSpec: Fig.Spec = {
             "-c",
             "bat --decorations unknow 2>&1 >/dev/null | grep possible",
           ],
-          postProcess: function (out) {
-            return out
+          postProcess: (out) =>
+            out
               .trim()
               .split("]")[0]
               .split("[")[1]
@@ -204,8 +201,7 @@ const completionSpec: Fig.Spec = {
                   description:
                     "Specify when to use the decorations that have been specified via '--style'",
                 };
-              });
-          },
+              }),
         },
       },
     },
@@ -224,8 +220,8 @@ const completionSpec: Fig.Spec = {
             "-c",
             "bat --paging unknow  2>&1 >/dev/null | grep possible",
           ],
-          postProcess: function (out) {
-            return out
+          postProcess: (out) =>
+            out
               .trim()
               .split("]")[0]
               .split("[")[1]
@@ -236,8 +232,7 @@ const completionSpec: Fig.Spec = {
                   name: mode.trim(),
                   description: "Specify when to use the pager",
                 };
-              });
-          },
+              }),
         },
       },
     },
@@ -272,11 +267,10 @@ const completionSpec: Fig.Spec = {
         name: "<theme>",
         generators: {
           script: ["bat", "--list-themes"],
-          postProcess: function (out) {
-            return out.split("\n").map((theme) => {
-              return { name: theme, description: "theme: " + theme };
-            });
-          },
+          postProcess: (out) =>
+            out.split("\n").map((theme) => {
+              return { name: theme, description: `theme: ${theme}` };
+            }),
         },
       },
     },

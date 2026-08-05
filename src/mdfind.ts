@@ -6,7 +6,7 @@ const smartFolderGenerator: Fig.Generator = {
       command: "ls",
       args: [
         "-1A",
-        `${context.environmentVariables["HOME"]}/Library/Saved Searches/`,
+        `${context.environmentVariables.HOME}/Library/Saved Searches/`,
       ],
     });
 
@@ -19,7 +19,7 @@ const smartFolderGenerator: Fig.Generator = {
         return {
           name: filename.substring(0, filename.indexOf(".")), // .savedSearch automatically added to the query, so remove it
           displayName: filename,
-          icon: "fig://" + path,
+          icon: `fig://${path}`,
           description: "Smart folder",
         };
       });

@@ -37,7 +37,7 @@ const bundleIdentifierGenerator: Fig.Generator = {
         name: app.bundleID,
         description: `${app.name} - ${app.version}`,
       }));
-    } catch (error) {
+    } catch (_error) {
       return [];
     }
   },

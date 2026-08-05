@@ -7,7 +7,7 @@ const archNames: { name: string; description: string }[] = [
 ];
 
 const archOptions: Fig.Option[] = archNames.map((arch) => ({
-  name: "-" + arch.name,
+  name: `-${arch.name}`,
   description: arch.description,
   isRepeatable: true,
   exclusiveOn: ["-arch"],

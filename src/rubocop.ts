@@ -1,6 +1,6 @@
 const copsGenerator: Fig.Generator = {
   script: ["rubocop", "--show-cops"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const cops = out.split("\n\n").map((cop) => {
       const lines = cop.split("\n");
       const nameIndex = lines.findIndex((line) => !line.startsWith("#"));

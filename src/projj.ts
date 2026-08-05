@@ -3,7 +3,7 @@ const repoGenerator: Fig.Generator = {
     const { stdout } = await executeCommand({
       command: "cat",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
-      args: [`${context.environmentVariables["HOME"]}/.projj/cache.json`],
+      args: [`${context.environmentVariables.HOME}/.projj/cache.json`],
     });
     const cache = JSON.parse(stdout);
     return Object.keys(cache).map((key) => ({
@@ -18,7 +18,7 @@ const hookGenerator: Fig.Generator = {
     const { stdout } = await executeCommand({
       command: "cat",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
-      args: [`${context.environmentVariables["HOME"]}/.projj/config.json`],
+      args: [`${context.environmentVariables.HOME}/.projj/config.json`],
     });
     const cache = JSON.parse(stdout);
     const hooks = cache.hooks;

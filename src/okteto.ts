@@ -7,7 +7,7 @@ const contexts: Fig.Generator = {
     return output
       .split("\n")
       .slice(1)
-      .map((context, ind) => {
+      .map((context, _ind) => {
         context = context.split(" ")[0];
         return {
           name: context.replace("*", "").trim(),
@@ -27,7 +27,7 @@ const namespaces: Fig.Generator = {
     return output
       .split("\n")
       .slice(1)
-      .map((namespace, ind) => {
+      .map((namespace, _ind) => {
         namespace = namespace.split(" ")[0];
         return {
           name: namespace.replace("*", "").trim(),

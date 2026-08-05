@@ -15,7 +15,7 @@ const bazelBuildFiles: Fig.Generator = {
   //     visibility = ["//main:__pkg__"],
   // )
 
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     // return lines
     const targets = [];
@@ -24,7 +24,7 @@ const bazelBuildFiles: Fig.Generator = {
       const isFilepath = lines[i].match("----.(.*)/BUILD");
       const isBazelTarget = lines[i].match('name = "(.*)"');
       if (isFilepath) {
-        currPath = isFilepath[1] + ":";
+        currPath = `${isFilepath[1]}:`;
       } else if (isBazelTarget) {
         targets.push({
           name: currPath + isBazelTarget[1],

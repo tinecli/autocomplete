@@ -12,16 +12,15 @@ const completionSpec: Fig.Spec = {
         strategy: "stale-while-revalidate",
         cacheByDirectory: true,
       },
-      postProcess: function (out) {
-        return out.split("\n").map((line) => {
+      postProcess: (out) =>
+        out.split("\n").map((line) => {
           const [name, description] = line.split("#");
 
           return {
             name: name.trim().slice("rake ".length),
             description: description.trim(),
           };
-        });
-      },
+        }),
     },
   },
   options: [

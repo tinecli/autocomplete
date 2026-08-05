@@ -1,4 +1,5 @@
 import clangpp from "./clang++";
+
 const completionSpec: Fig.Spec = {
   ...clangpp,
   name: "c++",

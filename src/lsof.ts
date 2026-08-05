@@ -245,7 +245,7 @@ const completionSpec: Fig.Spec = {
         generators: [
           {
             script: ["echo"],
-            postProcess: function () {
+            postProcess: () => {
               const startParams = ["4", "6"];
               return startParams.map((param) => ({
                 name: param,
@@ -254,11 +254,10 @@ const completionSpec: Fig.Spec = {
           },
           {
             script: ["echo"],
-            postProcess: function (out, tokens) {
+            postProcess: (_out, tokens) => {
               const startParams = ["tcp", "udp", "TCP", "UDP"];
               const token =
-                tokens[1].match(/^(-i[46])/) ||
-                (tokens[2] && tokens[2].match(/^[46]/));
+                tokens[1].match(/^(-i[46])/) || tokens[2]?.match(/^[46]/);
               const prefix = token && token.length > 0 ? token[1] : "";
               const result = startParams.map((param) => ({
                 name: prefix + param,
@@ -268,7 +267,7 @@ const completionSpec: Fig.Spec = {
           },
           {
             script: ["ifconfig"],
-            postProcess: function (out, tokens) {
+            postProcess: (out, tokens) => {
               const ips = out
                 .split("\n")
                 .filter((line) => line.match(/inet\b/))
@@ -279,10 +278,10 @@ const completionSpec: Fig.Spec = {
               let token = "@";
               if (tokens[1].match("@[^:]*$")) {
                 token = tokens[1];
-              } else if (tokens[2] && tokens[2].match("@[^:]*$")) {
+              } else if (tokens[2]?.match("@[^:]*$")) {
                 token = tokens[2];
               }
-              const prefix = token.split("@")[0] + "@";
+              const prefix = `${token.split("@")[0]}@`;
               const result = ips.map((ip) => ({
                 name: prefix + ip,
               }));
@@ -292,15 +291,15 @@ const completionSpec: Fig.Spec = {
           },
           {
             script: ["echo"],
-            postProcess: function (out, tokens) {
+            postProcess: (_out, tokens) => {
               const colonParams = ["http", "https", "who", "time"];
               let token = ":";
               if (tokens[1].match(":[^:]*")) {
                 token = tokens[1];
-              } else if (tokens[2] && tokens[2].match(":[^:]+")) {
+              } else if (tokens[2]?.match(":[^:]+")) {
                 token = tokens[2];
               }
-              const prefix = token.split(":")[0] + ":";
+              const prefix = `${token.split(":")[0]}:`;
 
               return colonParams.map((param) => ({
                 name: prefix + param,

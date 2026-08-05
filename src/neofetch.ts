@@ -451,7 +451,7 @@ const completionSpec: Fig.Spec = {
       description: "How to size the image",
       args: {
         name: "size",
-        suggestions: ["auto", anyNum + "px", anyNum + "%"],
+        suggestions: ["auto", `${anyNum}px`, `${anyNum}%`],
       },
     },
     {

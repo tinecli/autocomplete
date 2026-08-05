@@ -1,4 +1,5 @@
 import awsRegions from "./regions";
+
 const awsPrincipals = [
   "a4b.amazonaws.com",
   "acm-pca.amazonaws.com",
@@ -298,11 +299,11 @@ const listCustomSIDGenerator = async (
       command: "aws",
       args,
     });
-    const policies = JSON.parse(stdout)["Policy"];
-    const statement = JSON.parse(policies)["Statement"];
+    const policies = JSON.parse(stdout).Policy;
+    const statement = JSON.parse(policies).Statement;
     return statement.map((elm) => {
       return {
-        name: elm["Sid"],
+        name: elm.Sid,
         icon: "fig://icon?type=aws",
       };
     });
@@ -312,7 +313,7 @@ const listCustomSIDGenerator = async (
   return [];
 };
 const MultiSuggestionsGenerator = async (
-  tokens: string[],
+  _tokens: string[],
   executeShellCommand: Fig.ExecuteCommandFunction,
   enabled: {
     command: string[];
@@ -380,7 +381,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dotsArr = [];
     const otherArr = [];
     arr.map((elm) => {
-      if (elm.toLowerCase() == ".ds_store") return;
+      if (elm.toLowerCase() === ".ds_store") return;
       if (elm.slice(0, 1) === ".") dotsArr.push(elm);
       else otherArr.push(elm);
     });
@@ -461,25 +462,24 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listLayerVersionNumber: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-layer-versions",
         ["--layer-name"],
         "LayerVersions",
         "Version"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   getPrincipal: {
     script: ["aws", "sts", "get-caller-identity"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, _tokens) => {
       try {
-        const accountId = JSON.parse(out)["Account"];
+        const accountId = JSON.parse(out).Account;
         return [{ name: accountId }, { name: "*" }];
       } catch (error) {
         console.error(error);
@@ -491,44 +491,41 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   getLayerVersionPolicyRevision: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "get-layer-version-policy",
         ["--layer-name", "--version-number"],
         "RevisionId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   getFunctionPolicyRevisionId: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "get-policy",
         ["--function-name"],
         "RevisionId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   getFunctionRevisionId: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "get-function",
         ["--function-name"],
         "Configuration",
         "RevisionId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
@@ -548,22 +545,21 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listAliases: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-aliases",
         ["--function-name"],
         "Aliases",
         "Name"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listVersions: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         const idx = tokens.indexOf("--function-name");
         const args = [
@@ -576,11 +572,11 @@ const generators: Record<string, Fig.Generator> = {
           command: "aws",
           args,
         });
-        const list = JSON.parse(stdout)["Versions"];
+        const list = JSON.parse(stdout).Versions;
         return list
           .filter((elm) => elm.Version !== "$LATEST")
           .map((elm) => {
-            const version = elm["Version"];
+            const version = elm.Version;
             return {
               insertValue: version,
               name: version,
@@ -598,30 +594,28 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listSIDs: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomSIDGenerator(tokens, executeShellCommand, "get-policy", [
+    custom: async (tokens, executeShellCommand) =>
+      listCustomSIDGenerator(tokens, executeShellCommand, "get-policy", [
         "--function-name",
-      ]);
-    },
+      ]),
     cache: {
       ttl: ttl,
     },
   },
   listLayerVersionSIDs: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomSIDGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomSIDGenerator(
         tokens,
         executeShellCommand,
         "get-layer-version-policy",
         ["--layer-name", "--version-number"]
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listEventSourceArns: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       // Getting sqs queues is implemented, although it has a huge performance toll.
       // It seems Fig rejects long-running promises after a time.
       // I am currently investigating if this is the case.
@@ -662,7 +656,7 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listDestinationConfigArns: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       // Getting sqs queues is implemented, although it has a huge performance toll.
       // It seems Fig rejects long-running promises after a time.
       // I am currently investigating if this is the case.
@@ -698,39 +692,33 @@ const generators: Record<string, Fig.Generator> = {
   },
   listRoles: {
     script: ["aws", "iam", "list-roles", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Roles", "RoleName");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Roles", "RoleName"),
     cache: {
       ttl: ttl,
     },
   },
   listKmsKeys: {
     script: ["aws", "kms", "list-keys", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Keys", "KeyArn");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Keys", "KeyArn"),
     cache: {
       ttl: ttl,
     },
   },
   listLayers: {
     script: ["aws", "lambda", "list-layers"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Layers", "LayerArn");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Layers", "LayerArn"),
     cache: {
       ttl: ttl,
     },
   },
   listLayerArnsWithVersion: {
     script: ["aws", "lambda", "list-layers"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["Layers"];
+        const list = JSON.parse(out).Layers;
         return list.map((elm) => {
           return {
-            name: elm["LatestMatchingVersion"]["LayerVersionArn"],
+            name: elm.LatestMatchingVersion.LayerVersionArn,
             icon: "fig://icon?type=aws",
           };
         });
@@ -745,11 +733,11 @@ const generators: Record<string, Fig.Generator> = {
   },
   listFilesystemConfigs: {
     script: ["aws", "efs", "describe-file-systems"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["FileSystems"];
+        const list = JSON.parse(out).FileSystems;
         return list.map((elm) => {
-          const name = ("FileSystemArn" ? elm["FileSystemArn"] : elm) as string;
+          const name = elm.FileSystemArn as string;
           return {
             name: `Arn=${name},LocalMountPath=/mnt/`,
             icon: "fig://icon?type=aws",
@@ -772,13 +760,8 @@ const generators: Record<string, Fig.Generator> = {
       "--page-size",
       "100",
     ],
-    postProcess: function (out) {
-      return postPrecessGenerator(
-        out,
-        "CodeSigningConfigs",
-        "CodeSigningConfigArn"
-      );
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "CodeSigningConfigs", "CodeSigningConfigArn"),
     cache: {
       ttl: ttl,
     },
@@ -791,25 +774,22 @@ const generators: Record<string, Fig.Generator> = {
       "--page-size",
       "100",
     ],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "EventSourceMappings", "UUID");
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "EventSourceMappings", "UUID"),
     cache: {
       ttl: ttl,
     },
   },
   listCodeSHA: {
     script: ["aws", "lambda", "list-functions"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Functions", "CodeSha256");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Functions", "CodeSha256"),
     cache: {
       ttl: ttl,
     },
   },
   listBuckets: {
     script: ["aws", "s3", "ls", "--page-size", "1000"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, _tokens) => {
       try {
         return out.split("\n").map((line) => {
           const parts = line.split(/\s+/);
@@ -831,7 +811,7 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listS3Objects: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         const idx = tokens.indexOf("--s3-bucket");
         const args = [
@@ -846,7 +826,7 @@ const generators: Record<string, Fig.Generator> = {
           command: "aws",
           args,
         });
-        if (stdout == "") {
+        if (stdout === "") {
           return [];
         }
         if (stdout.trim() === _prefixS3) {
@@ -877,7 +857,7 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listS3ObjectVersions: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         const bucketIdx = tokens.indexOf("--s3-bucket");
         const objectIdx = tokens.indexOf("--s3-key");
@@ -893,7 +873,7 @@ const generators: Record<string, Fig.Generator> = {
           command: "aws",
           args,
         });
-        if (stdout == "") {
+        if (stdout === "") {
           return [];
         }
         if (stdout.trim() === _prefixS3) {
@@ -904,12 +884,12 @@ const generators: Record<string, Fig.Generator> = {
             },
           ];
         }
-        const list = JSON.parse(stdout)["Versions"];
+        const list = JSON.parse(stdout).Versions;
         return list
-          .filter((elm) => elm["VersionId"] !== "null")
+          .filter((elm) => elm.VersionId !== "null")
           .map((elm) => {
             return {
-              name: elm["VersionId"],
+              name: elm.VersionId,
               icon: "fig://icon?type=aws",
             };
           });

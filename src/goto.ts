@@ -1,9 +1,9 @@
 const listTargets: Fig.Generator = {
-  custom: async (tokens, executeShellCommand, context) => {
+  custom: async (_tokens, executeShellCommand, context) => {
     const { stdout } = await executeShellCommand({
       command: "cat",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
-      args: [`${context.environmentVariables["HOME"]}/.config/goto`],
+      args: [`${context.environmentVariables.HOME}/.config/goto`],
     });
 
     const targetSuggestions = new Map<string, Fig.Suggestion>();
@@ -12,7 +12,7 @@ const listTargets: Fig.Generator = {
       const splits = target.split(" ");
       targetSuggestions.set(target, {
         name: splits[0],
-        description: "Goto " + splits[1],
+        description: `Goto ${splits[1]}`,
         icon: "🔖",
         priority: 80,
       });

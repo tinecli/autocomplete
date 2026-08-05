@@ -82,7 +82,7 @@ const completionSpec: Fig.Subcommand = {
         "Follows symlinks to directories when examining source code and templates for translation strings",
     },
   ],
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     if (
       (
         await executeShellCommand({

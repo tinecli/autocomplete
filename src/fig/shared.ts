@@ -63,7 +63,7 @@ const disableForCommandsGenerator: Fig.Generator = {
           name: `Enable ${disabledCommand}`,
           icon: "fig://icon?type=box",
           insertValue: JSON.stringify(
-            existing.filter((cmd) => cmd != disabledCommand)
+            existing.filter((cmd) => cmd !== disabledCommand)
           ),
         };
       })
@@ -168,7 +168,9 @@ export const settingsSpecGenerator: Fig.Subcommand["generateSpec"] = async (
             : name.startsWith("autocomplete.keybindings.")
               ? actionSuggestions
               : options?.map((option) => ({
+                  // biome-ignore lint/complexity/useLiteralKeys: option is string | {name, description}; dot access errors on the string branch, bracket access doesn't
                   name: option["name"] || option,
+                  // biome-ignore lint/complexity/useLiteralKeys: see above
                   description: option["description"] || "",
                 }));
         // const insertValue =
@@ -280,7 +282,7 @@ export const tokensGenerators: Fig.Generator = {
       return {
         name: token.name,
         description: `Team: ${token.namespace.username}.${
-          token.description ? " " + token.description : ""
+          token.description ? ` ${token.description}` : ""
         }`,
       };
     });
@@ -466,7 +468,7 @@ const scriptOptions = (script: ScriptFields) => {
           name: param.name,
         };
         break;
-      case "Selector":
+      case "Selector": {
         let generators: Fig.Generator[] = [];
         if (param?.selector?.generators) {
           generators = param?.selector?.generators
@@ -482,6 +484,7 @@ const scriptOptions = (script: ScriptFields) => {
           generators,
         };
         break;
+      }
       case "Path":
         option.args = {
           name: param.name,

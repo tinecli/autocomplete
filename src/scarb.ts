@@ -36,7 +36,7 @@ const completionSpec: Fig.Spec = {
                 "1",
                 "--no-deps",
               ],
-              postProcess: function (out) {
+              postProcess: (out) => {
                 const jsonOut = JSON.parse(out);
                 const members = jsonOut.workspace.members;
                 return members.map((member: string) => member.split(" ")[0]);
@@ -118,7 +118,7 @@ const completionSpec: Fig.Spec = {
                 "1",
                 "--no-deps",
               ],
-              postProcess: function (out) {
+              postProcess: (out) => {
                 const jsonOut = JSON.parse(out);
                 const members = jsonOut.workspace.members;
                 return members.map((member: string) => member.split(" ")[0]);
@@ -164,7 +164,7 @@ const completionSpec: Fig.Spec = {
                 "1",
                 "--no-deps",
               ],
-              postProcess: function (out) {
+              postProcess: (out) => {
                 const jsonOut = JSON.parse(out);
                 const members = jsonOut.workspace.members;
                 return members.map((member: string) => member.split(" ")[0]);
@@ -338,7 +338,7 @@ const completionSpec: Fig.Spec = {
                 "1",
                 "--no-deps",
               ],
-              postProcess: function (out) {
+              postProcess: (out) => {
                 const jsonOut = JSON.parse(out);
                 const members = jsonOut.workspace.members;
                 return members.map((member: string) => member.split(" ")[0]);
@@ -508,7 +508,7 @@ const completionSpec: Fig.Spec = {
                 "1",
                 "--no-deps",
               ],
-              postProcess: function (out) {
+              postProcess: (out) => {
                 const jsonOut = JSON.parse(out);
                 const members = jsonOut.workspace.members;
                 return members.map((member: string) => member.split(" ")[0]);
@@ -587,7 +587,7 @@ const completionSpec: Fig.Spec = {
                 "1",
                 "--no-deps",
               ],
-              postProcess: function (out) {
+              postProcess: (out) => {
                 const jsonOut = JSON.parse(out);
                 const members = jsonOut.workspace.members;
                 return members.map((member: string) => member.split(" ")[0]);

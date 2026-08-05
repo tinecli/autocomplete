@@ -19,7 +19,7 @@ interface Option {
 const completionSpec: Fig.Spec = {
   name: "please",
   description: "Statamic Please command",
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     const { stdout } = await executeShellCommand({
       command: "php",
       args: ["please", "list", "--format=json"],

@@ -9,7 +9,7 @@ const tagsGenerator: Fig.Generator = {
   postProcess: (out) => {
     // find all lines with tags
     // regex: line that starts with 2+ spaces, than '[Tags]  ' and words
-    const iter = out.matchAll(/(?:^\s\s+\[Tags\])\s\s+(\w+ *)*(?!.\#.*)/gm);
+    const iter = out.matchAll(/(?:^\s\s+\[Tags\])\s\s+(\w+ *)*(?!.#.*)/gm);
 
     const seen: Set<string> = new Set();
     const suggestions: Fig.Suggestion[] = [];
@@ -74,12 +74,12 @@ const testCasesGenerator: Fig.Generator = {
     for (const [_, block] of iter) {
       // get every test case name
       // regex: word/s at the start of a line until '#'
-      const lines = block.matchAll(/^(\w+( |-)*)+(?!.\#.*)(?!.\#.*)/gm);
+      const lines = block.matchAll(/^(\w+( |-)*)+(?!.#.*)(?!.#.*)/gm);
       // go through all the test cases names found
       for (let [testCase] of lines) {
         testCase = testCase.trim();
         // validate if the test case name isn't divided by more than one space
-        if (testCase.search(/\s\s+/) != -1) continue;
+        if (testCase.search(/\s\s+/) !== -1) continue;
 
         if (seen.has(testCase)) continue;
         seen.add(testCase);

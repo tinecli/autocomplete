@@ -29,7 +29,7 @@ const postProcessTrackedFiles: Fig.Generator["postProcess"] = (
 
       try {
         ext = file.split(".").slice(-1)[0];
-      } catch (e) {}
+      } catch (_e) {}
 
       if (file.endsWith("/")) {
         ext = "folder";
@@ -119,7 +119,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
   // Commit history
   commits: {
     script: ["git", "--no-optional-locks", "log", "--oneline"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const output = filterMessages(out);
 
       if (output.startsWith("fatal:")) {
@@ -165,7 +165,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
 
   revs: {
     script: ["git", "rev-list", "--all", "--oneline"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const output = filterMessages(out);
 
       if (output.startsWith("fatal:")) {
@@ -186,7 +186,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
   // TODO: maybe only print names of stashes
   stashes: {
     script: ["git", "--no-optional-locks", "stash", "list"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const output = filterMessages(out);
 
       if (output.startsWith("fatal:")) {
@@ -212,7 +212,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
 
   treeish: {
     script: ["git", "--no-optional-locks", "diff", "--cached", "--name-only"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, tokens) => {
       const output = filterMessages(out);
 
       if (output.startsWith("fatal:")) {
@@ -295,7 +295,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
 
   remotes: {
     script: ["git", "--no-optional-locks", "remote", "-v"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const remoteURLs = out
         .split("\n")
         .reduce<Record<string, string>>((dict, line) => {
@@ -338,12 +338,11 @@ export const gitGenerators: Record<string, Fig.Generator> = {
       "--list",
       "--sort=-committerdate",
     ],
-    postProcess: function (output) {
-      return output.split("\n").map((tag) => ({
+    postProcess: (output) =>
+      output.split("\n").map((tag) => ({
         name: tag,
         icon: "🏷️",
-      }));
-    },
+      })),
   },
 
   // Files for staging
@@ -416,7 +415,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
       return [
         ...dirArr.map((name) => {
           return {
-            name: name + "*",
+            name: `${name}*`,
             description: "Wildcard",
             icon: "fig://icon?type=asterisk",
           };
@@ -426,7 +425,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
           let ext = "";
           try {
             ext = file.split(".").slice(-1)[0];
-          } catch (e) {}
+          } catch (_e) {}
 
           if (file.endsWith("/")) {
             ext = "folder";
@@ -461,7 +460,7 @@ export const gitGenerators: Record<string, Fig.Generator> = {
   },
 
   getChangedTrackedFiles: {
-    script: function (context) {
+    script: (context) => {
       if (context.includes("--staged") || context.includes("--cached")) {
         return [
           "bash",

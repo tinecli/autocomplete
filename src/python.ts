@@ -3,7 +3,7 @@ import { filepaths } from "@fig/autocomplete-generators";
 const completionSpec: Fig.Spec = {
   name: "python",
   description: "Run the python interpreter",
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     const isDjangoManagePyFilePresentCommand = "cat manage.py | grep -q django";
     if (
       (

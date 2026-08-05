@@ -4,8 +4,8 @@ export const awsProfileGenerator: Fig.Generator = {
     cacheByDirectory: true,
   },
   script: ["aws", "configure", "list-profiles"],
-  postProcess: function (out) {
-    if (out.trim() == "") {
+  postProcess: (out) => {
+    if (out.trim() === "") {
       return [];
     }
     return out.split("\n").map((line) => ({

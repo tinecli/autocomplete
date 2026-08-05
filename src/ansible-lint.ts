@@ -1,4 +1,4 @@
-const shortFormatArg: Fig.Arg = {
+const _shortFormatArg: Fig.Arg = {
   name: "-f",
   suggestions: ["rich", "plain", "md"],
   default: "rich",

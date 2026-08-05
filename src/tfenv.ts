@@ -1,19 +1,15 @@
 const generators: Record<string, Fig.Generator> = {
   installedVersions: {
     script: ["tfenv", "list"],
-    postProcess: function (out) {
-      return out.split("\n").map((tfversion) => {
+    postProcess: (out) =>
+      out.split("\n").map((tfversion) => {
         return { name: tfversion, description: "Version" };
-      });
-    },
+      }),
   },
   allVersions: {
     script: ["tfenv", "list-remote"],
-    postProcess: function (out) {
-      return out.split("\n").map(function (line) {
-        return { name: line, type: "option" };
-      });
-    },
+    postProcess: (out) =>
+      out.split("\n").map((line) => ({ name: line, type: "option" })),
   },
 };
 

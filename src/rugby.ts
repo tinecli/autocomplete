@@ -8,7 +8,7 @@ const planList: Fig.Generator = {
     return output.split("\n").map((plan) => {
       return {
         name: plan,
-        description: `Run plan \"${plan}\"`,
+        description: `Run plan "${plan}"`,
         icon: "✈️",
         priority: 77,
       };
@@ -20,7 +20,7 @@ const completionSpec: Fig.Spec = {
   description:
     "Cache Cocoa 🌱 pods for faster rebuild and indexing Xcode project. https://github.com/swiftyfinch/Rugby",
   name: "rugby",
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     const { stdout } = await executeShellCommand({
       command: "rugby",
       args: ["plan", "list"],
@@ -34,7 +34,7 @@ const completionSpec: Fig.Spec = {
       subcommands: stdout.split("\n").map((plan) => {
         return {
           name: plan,
-          description: `Run plan \"${plan}\"`,
+          description: `Run plan "${plan}"`,
           icon: "✈️",
           priority: 77,
           options: [

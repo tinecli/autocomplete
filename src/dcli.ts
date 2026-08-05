@@ -32,7 +32,7 @@ const helpCommand: Fig.Subcommand = {
 
 const deviceGenerator: Fig.Generator = {
   script: ["dcli", "devices", "list", "--json"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       const devices = JSON.parse(out) as Device[];
       devices.sort((a, b) => b.lastActivityDateUnix - a.lastActivityDateUnix);
@@ -44,7 +44,7 @@ const deviceGenerator: Fig.Generator = {
         )}`,
         insertValue: device.deviceId,
       }));
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   },
@@ -52,7 +52,7 @@ const deviceGenerator: Fig.Generator = {
 
 const teamCredentialGenerator: Fig.Generator = {
   script: ["dcli", "team", "credentials", "list", "--json"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       const credentials = JSON.parse(out) as TeamCredential[];
       credentials.sort((a, b) => b.creationDateUnix - a.creationDateUnix);
@@ -64,7 +64,7 @@ const teamCredentialGenerator: Fig.Generator = {
         )}`,
         insertValue: credential.accessKey,
       }));
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   },

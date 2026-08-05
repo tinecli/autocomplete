@@ -7,7 +7,7 @@ const hostPortOptions: Fig.Option[] = [
     args: {},
   },
   {
-    name: ["-H", , "--hostname"],
+    name: ["-H", undefined, "--hostname"],
     description: "Hostname on which to start the application",
     args: {},
   },

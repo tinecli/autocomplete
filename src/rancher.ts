@@ -2,13 +2,13 @@ import { filepaths } from "@fig/autocomplete-generators";
 
 const serverList: Fig.Generator = {
   script: ["rancher", "server", "ls"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const serversList = [];
     for (let i = 1; i < lines.length; i++) {
       const activeStatus = lines[i].match(/\S+/g)[0];
       // Remove current server from the list
-      if (activeStatus != "*") {
+      if (activeStatus !== "*") {
         const server = lines[i].match(/\S+/g)[1];
         const serverUrl = lines[i].match(/\S+/g)[2];
         serversList.push({

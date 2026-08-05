@@ -25,15 +25,15 @@ const commonOptions: Fig.Option[] = [
 
 const platformGenerator: Fig.Generator = {
   script: ["cat", "package.json"],
-  postProcess: function (out: string) {
+  postProcess: (out: string) => {
     const suggestions = [];
     try {
-      if (out.trim() == "") {
+      if (out.trim() === "") {
         return suggestions;
       }
 
       const packageJSON = JSON.parse(out);
-      const platforms = packageJSON["cordova"]["platforms"];
+      const platforms = packageJSON.cordova.platforms;
 
       if (platforms) {
         for (const platform of platforms) {

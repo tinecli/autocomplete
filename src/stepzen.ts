@@ -12,7 +12,7 @@ const endpointsGenerator: Fig.Generator = {
           description: "StepZen endpoint",
         } as Fig.Suggestion;
       }) as Fig.Suggestion[];
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   },
@@ -27,7 +27,7 @@ const importSchemasGenerator: Fig.Generator = {
     try {
       return JSON.parse(output)
         .filter((repo: { name: string; type: string }) => {
-          return repo.type == "dir" && !repo.name.startsWith(".");
+          return repo.type === "dir" && !repo.name.startsWith(".");
         })
         .map((repo: { name: string }) => {
           return {
@@ -36,7 +36,7 @@ const importSchemasGenerator: Fig.Generator = {
             icon: "📦",
           } as Fig.Suggestion;
         }) as Fig.Suggestion[];
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   },

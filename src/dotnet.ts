@@ -208,7 +208,7 @@ const completionSpec: Fig.Spec = {
   ],
   subcommands: commands,
   async generateSpec(_, executeShellCommand) {
-    const argRegex = /(([a-zA-Z \.\[\]#,/][^ ]{1,})+)/g;
+    const argRegex = /(([a-zA-Z .[\]#,/][^ ]{1,})+)/g;
 
     const subcommands: Fig.Subcommand[] = [];
     const { stdout } = await executeShellCommand({

@@ -1,4 +1,5 @@
 import awsRegions from "./regions";
+
 const callAs = ["SELF", "DELEGATED_ADMIN"];
 const typeSuggestion = ["RESOURCE", "MODULE"];
 const permissionModel = ["SERVICE_MANAGED", "SELF_MANAGED"];
@@ -165,7 +166,7 @@ const sortSuggestions = (arr: string[], isS3?: boolean): Fig.Suggestion[] => {
     const dots_arr = [];
     const other_arr = [];
     arr.map((fsObject) => {
-      if (fsObject.toLowerCase() == ".ds_store") return;
+      if (fsObject.toLowerCase() === ".ds_store") return;
       if (fsObject.slice(0, 1) === ".") {
         dots_arr.push(fsObject);
       } else {
@@ -234,7 +235,7 @@ const generators: Record<string, Fig.Generator> = {
       return [...baseLsCommand, folderPath];
     },
     postProcess: (out) => {
-      if (out == "") {
+      if (out === "") {
         return [];
       }
       if (out.trim() === _prefixS3) {
@@ -274,13 +275,16 @@ const generators: Record<string, Fig.Generator> = {
           }
           // If output line's third column is a number (File size column)
           // we can assume that it is a file so do not append trailing '/'
-          if (!isNaN(parseFloat(parts[2])) && isFinite(parseInt(parts[2]))) {
+          if (
+            !Number.isNaN(parseFloat(parts[2])) &&
+            Number.isFinite(parseInt(parts[2], 10))
+          ) {
             return s3Path;
           }
           // Any leftover lines are bucket names
           // just append '/' at the end
           if (!hasBackSlash) {
-            s3Path = s3Path + "/";
+            s3Path = `${s3Path}/`;
           }
         } catch (e) {
           console.log(e);
@@ -385,9 +389,9 @@ const generators: Record<string, Fig.Generator> = {
   },
   getAccountId: {
     script: ["aws", "sts", "get-caller-identity"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       try {
-        const accountId = JSON.parse(out)["Account"];
+        const accountId = JSON.parse(out).Account;
         return [{ name: accountId }];
       } catch (error) {
         console.error(error);
@@ -397,9 +401,7 @@ const generators: Record<string, Fig.Generator> = {
   },
   listTypeArns: {
     script: ["aws", "cloudformation", "list-types"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "TypeSummaries", "TypeArn");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "TypeSummaries", "TypeArn"),
   },
   listTypeVersionsByTypeName: {
     custom: async (tokens, executeShellCommand) => {
@@ -442,7 +444,7 @@ const generators: Record<string, Fig.Generator> = {
             param,
           ],
         });
-        const stackId = JSON.parse(stdout)["StackId"];
+        const stackId = JSON.parse(stdout).StackId;
         return [
           {
             name: stackId,
@@ -457,13 +459,11 @@ const generators: Record<string, Fig.Generator> = {
   },
   listExportNames: {
     script: ["aws", "cloudformation", "list-exports"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Exports", "Name");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Exports", "Name"),
   },
   listBuckets: {
     script: ["aws", "s3", "ls", "--page-size", "1000"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, _tokens) => {
       try {
         return out.split("\n").map((line) => {
           const parts = line.split(/\s+/);
@@ -483,9 +483,7 @@ const generators: Record<string, Fig.Generator> = {
   },
   listKmsKeys: {
     script: ["aws", "kms", "list-keys", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Keys", "KeyId");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Keys", "KeyId"),
   },
 };
 const completionSpec: Fig.Spec = {

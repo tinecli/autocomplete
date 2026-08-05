@@ -25,9 +25,9 @@ const flyAppsGenerator: Fig.Generator = {
         name: app.ID,
         description: `Organization: ${app.Organization.Slug}`,
         icon:
-          status == "running" || status == "deployed"
+          status === "running" || status === "deployed"
             ? "🟢"
-            : status == "pending"
+            : status === "pending"
               ? "🟡"
               : "🔴",
       };
@@ -45,9 +45,9 @@ const flyOrgsGenerator: Fig.Generator = {
     // sort such that "personal" is always first, then alphabetically
     return Object.entries(json)
       .sort(([id1, name1], [id2, name2]) => {
-        if (id1 == "personal") {
+        if (id1 === "personal") {
           return -1;
-        } else if (id2 == "personal") {
+        } else if (id2 === "personal") {
           return 1;
         } else {
           return name1.localeCompare(name2);
@@ -56,7 +56,7 @@ const flyOrgsGenerator: Fig.Generator = {
       .map(([id, name]) => ({
         name: id,
         description: name,
-        icon: id == "personal" ? "👤" : "🏢",
+        icon: id === "personal" ? "👤" : "🏢",
       }));
   },
 };

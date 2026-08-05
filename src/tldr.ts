@@ -9,14 +9,14 @@ const windows = `${tldrRc}/pages/windows/`;
 const isMarkDownRegex = new RegExp(/^.*\.md$/);
 
 const wholeTldrPages: Fig.Generator = {
-  custom: async (tokens, executeShellCommand, context) => {
+  custom: async (_tokens, executeShellCommand, context) => {
     const { stdout } = await executeShellCommand({
       command: "ls",
       // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
       args: [
         "-Al",
         ...[android, common, linux, osx, sunos, windows].map((path) =>
-          path.replace(/^~/, context.environmentVariables["HOME"])
+          path.replace(/^~/, context.environmentVariables.HOME)
         ),
       ],
     });

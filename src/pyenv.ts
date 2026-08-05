@@ -1,18 +1,17 @@
 const versionList: Fig.Generator = {
   script: ["pyenv", "install", "-l"],
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .trim()
       .split("\n")
       .slice(1)
-      .map((name) => ({ name: name.trim(), icon: "🐍" }));
-  },
+      .map((name) => ({ name: name.trim(), icon: "🐍" })),
 };
 
 const globalList: Fig.Generator = {
   script: ["pyenv", "versions"],
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .trim()
       .split("\n")
       .map((l) => {
@@ -20,8 +19,7 @@ const globalList: Fig.Generator = {
         const name = sel ? l.replace("*", "").trim() : l.trim();
         const icon = sel ? "🌟" : "🐍";
         return { name, icon };
-      });
-  },
+      }),
 };
 
 const completionSpec: Fig.Spec = {

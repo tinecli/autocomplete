@@ -33,7 +33,7 @@ const packageSearchGenerator: Fig.Generator = {
 const versionSearchGenerator: Fig.Generator = {
   script(context) {
     const command = context.filter((ctx) => !ctx.startsWith("-"));
-    const idx = command.findIndex((ctx) => ctx === "package");
+    const idx = command.indexOf("package");
     const searchTerm = command[idx + 1].toLowerCase();
 
     return [

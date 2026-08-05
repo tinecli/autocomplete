@@ -224,7 +224,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dotsArray = [];
     const otherArray = [];
     arr.map((elm) => {
-      if (elm.toLowerCase() == ".ds_store") return;
+      if (elm.toLowerCase() === ".ds_store") return;
       if (elm.slice(0, 1) === ".") dotsArray.push(elm);
       else otherArray.push(elm);
     });
@@ -302,7 +302,7 @@ const postPrecessGenerator = (
   return [];
 };
 const MultiSuggestionsGenerator = async (
-  tokens: string[],
+  _tokens: string[],
   executeShellCommand: Fig.ExecuteCommandFunction,
   enabled: Identity[]
 ) => {
@@ -319,8 +319,8 @@ const MultiSuggestionsGenerator = async (
     for (let i = 0; i < enabled.length; i++) {
       list[i] = postPrecessGenerator(
         result[i],
-        enabled[i]["parentKey"],
-        enabled[i]["childKey"]
+        enabled[i].parentKey,
+        enabled[i].childKey
       );
     }
     return list.flat();
@@ -332,9 +332,9 @@ const MultiSuggestionsGenerator = async (
 const generators: Record<string, Fig.Generator> = {
   getAccountArn: {
     script: ["aws", "sts", "get-caller-identity"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, _tokens) => {
       try {
-        const accountId = JSON.parse(out)["Account"];
+        const accountId = JSON.parse(out).Account;
         return [{ name: `arn:aws:iam::${accountId}-ID:root` }];
       } catch (error) {
         console.error(error);
@@ -347,56 +347,48 @@ const generators: Record<string, Fig.Generator> = {
   },
   listOpenIdProviders: {
     script: ["aws", "iam", "list-open-id-connect-providers"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "OpenIDConnectProviderList", "Arn");
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "OpenIDConnectProviderList", "Arn"),
     cache: {
       ttl: ttl,
     },
   },
   listOpenIdClientsForProvider: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "get-open-id-connect-provider",
         "--open-id-connect-provider-arn",
         "ClientIDList"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listOpenIdThumbprintsForProvider: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "get-open-id-connect-provider",
         "--open-id-connect-provider-arn",
         "ThumbprintList"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listInstanceProfiles: {
     script: ["aws", "iam", "list-instance-profiles", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(
-        out,
-        "InstanceProfiles",
-        "InstanceProfileName"
-      );
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "InstanceProfiles", "InstanceProfileName"),
     cache: {
       ttl: ttl,
     },
   },
   listInstancePorfileRoles: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         const idx = tokens.indexOf("--instance-profile-name");
         if (idx < 0) {
@@ -412,10 +404,10 @@ const generators: Record<string, Fig.Generator> = {
             param,
           ],
         });
-        const policies = JSON.parse(stdout)["InstanceProfile"];
-        return policies["Roles"].map((elm) => {
+        const policies = JSON.parse(stdout).InstanceProfile;
+        return policies.Roles.map((elm) => {
           return {
-            name: elm["RoleName"],
+            name: elm.RoleName,
           };
         });
       } catch (e) {
@@ -429,56 +421,48 @@ const generators: Record<string, Fig.Generator> = {
   },
   listUsers: {
     script: ["aws", "iam", "list-users", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Users", "UserName");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Users", "UserName"),
     cache: {
       ttl: ttl,
     },
   },
   listUserArns: {
     script: ["aws", "iam", "list-users", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Users", "Arn");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Users", "Arn"),
     cache: {
       ttl: ttl,
     },
   },
   listPoliciesForUser: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-user-policies",
         "--user-name",
         "PolicyNames"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listGroups: {
     script: ["aws", "iam", "list-groups", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Groups", "GroupName");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Groups", "GroupName"),
     cache: {
       ttl: ttl,
     },
   },
   listUsersInGroup: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "get-group",
         "--group-name",
         "Users",
         "UserName"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
@@ -493,121 +477,110 @@ const generators: Record<string, Fig.Generator> = {
       "--scope",
       "Local",
     ],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Policies", "Arn");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Policies", "Arn"),
     cache: {
       ttl: ttl,
     },
   },
   listVersionsForPolicy: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-policy-versions",
         "--policy-arn",
         "Versions",
         "VersionId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listPoliciesForGroup: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-group-policies",
         "--group-name",
         "PolicyNames"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listAttachedPolicyArnsForGroup: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-attached-group-policies",
         "--group-name",
         "AttachedPolicies",
         "PolicyArn"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listAttachedPolicyNamesForGroup: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-attached-group-policies",
         "--group-name",
         "AttachedPolicies",
         "PolicyName"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listAttachedPolicyArnsForRole: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-attached-role-policies",
         "--role-name",
         "AttachedPolicies",
         "PolicyArn"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listAttachedPolicyArnsUser: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-attached-user-policies",
         "--user-name",
         "AttachedPolicies",
         "PolicyArn"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listRoles: {
     script: ["aws", "iam", "list-roles", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "Roles", "RoleName");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "Roles", "RoleName"),
     cache: {
       ttl: ttl,
     },
   },
   listPoliciesForRole: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-role-policies",
         "--role-name",
         "PolicyNames"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
@@ -631,259 +604,233 @@ const generators: Record<string, Fig.Generator> = {
   },
   listMfaDevices: {
     script: ["aws", "iam", "list-mfa-devices", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "MFADevices", "SerialNumber");
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "MFADevices", "SerialNumber"),
     cache: {
       ttl: ttl,
     },
   },
   listVirtualMfaDevices: {
     script: ["aws", "iam", "list-virtual-mfa-devices", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "VirtualMFADevices", "SerialNumber");
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "VirtualMFADevices", "SerialNumber"),
     cache: {
       ttl: ttl,
     },
   },
   listAccessKeyIds: {
     script: ["aws", "iam", "list-access-keys", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "AccessKeyMetadata", "AccessKeyId");
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "AccessKeyMetadata", "AccessKeyId"),
     cache: {
       ttl: ttl,
     },
   },
   listAccountAliases: {
     script: ["aws", "iam", "list-account-aliases", "--page-size", "100"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "AccountAliases");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "AccountAliases"),
     cache: {
       ttl: ttl,
     },
   },
   listSamlProviders: {
     script: ["aws", "iam", "list-saml-providers"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "SAMLProviderList", "Arn");
-    },
+    postProcess: (out) => postPrecessGenerator(out, "SAMLProviderList", "Arn"),
     cache: {
       ttl: ttl,
     },
   },
   listSSHPublicKeys: {
     script: ["aws", "iam", "list-ssh-public-keys", "--page-size", "1000"],
-    postProcess: function (out) {
-      return postPrecessGenerator(out, "SSHPublicKeys", "SSHPublicKeyId");
-    },
+    postProcess: (out) =>
+      postPrecessGenerator(out, "SSHPublicKeys", "SSHPublicKeyId"),
     cache: {
       ttl: ttl,
     },
   },
   listSSHPublicKeysForUser: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-ssh-public-keys",
         "--user-name",
         "SSHPublicKeys",
         "SSHPublicKeyId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listServerCerts: {
     script: ["aws", "iam", "list-server-certificates", "--page-size", "1000"],
-    postProcess: function (out) {
-      return postPrecessGenerator(
+    postProcess: (out) =>
+      postPrecessGenerator(
         out,
         "ServerCertificateMetadataList",
         "ServerCertificateName"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listServiceSpecificCredentialsForUser: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-service-specific-credentials",
         "--user-name",
         "ServiceSpecificCredentials",
         "ServiceSpecificCredentialId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listSigningCertificatesForUser: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-signing-certificates",
         "--user-name",
         "Certificates",
         "CertificateId"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listAllArns: {
-    custom: async function (tokens, executeShellCommand) {
-      return MultiSuggestionsGenerator(tokens, executeShellCommand, [
+    custom: async (tokens, executeShellCommand) =>
+      MultiSuggestionsGenerator(tokens, executeShellCommand, [
         ...identityStruct,
         {
           command: ["iam", "list-policies", "--scope", "Local"],
           parentKey: "Policies",
           childKey: "Arn",
         },
-      ]);
-    },
+      ]),
     cache: {
       ttl: ttl,
     },
   },
   listIdentityArns: {
-    custom: async function (tokens, executeShellCommand) {
-      return MultiSuggestionsGenerator(
-        tokens,
-        executeShellCommand,
-        identityStruct
-      );
-    },
+    custom: async (tokens, executeShellCommand) =>
+      MultiSuggestionsGenerator(tokens, executeShellCommand, identityStruct),
     cache: {
       ttl: ttl,
     },
   },
   listInstanceProfileTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-instance-profile-tags",
         "--instance-profile-name",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listMfaDeviceTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-mfa-device-tags",
         "--serial-number",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listOpenIdProviderTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-open-id-connect-provider-tags",
         "--open-id-connect-provider-arn",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listIamPolicyTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-policy-tags",
         "--policy-arn",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listRoleTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-role-tags",
         "--role-name",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listSamlProviderTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-saml-provider-tags",
         "--saml-provider-arn",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listServerCertsKeys: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-server-certificate-tags",
         "--server-certificate-name",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
   },
   listUserTags: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-user-tags",
         "--user-name",
         "Tags",
         "Key"
-      );
-    },
+      ),
     cache: {
       ttl: ttl,
     },
@@ -1623,7 +1570,7 @@ const completionSpec: Fig.Spec = {
             "The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default value of one hour is applied. This setting can have a value from 1 hour to 12 hours. Anyone who assumes the role from the CLI or API can use the DurationSeconds API parameter or the duration-seconds CLI parameter to request a longer session. The MaxSessionDuration setting determines the maximum duration that can be requested using the DurationSeconds parameter. If users don't specify a value for the DurationSeconds parameter, their security credentials are valid for one hour by default. This applies when you use the AssumeRole* API operations or the assume-role* CLI operations but does not apply when you use those operations to create a console URL. For more information, see Using IAM roles in the IAM User Guide",
           args: {
             name: "integer",
-            suggestions: Array.from({ length: 13 - 1 }, (v, k) =>
+            suggestions: Array.from({ length: 13 - 1 }, (_v, k) =>
               String(k + 1)
             ),
           },
@@ -8407,7 +8354,7 @@ const completionSpec: Fig.Spec = {
             "The maximum session duration (in seconds) that you want to set for the specified role. If you do not specify a value for this setting, the default value of one hour is applied. This setting can have a value from 1 hour to 12 hours. Anyone who assumes the role from the CLI or API can use the DurationSeconds API parameter or the duration-seconds CLI parameter to request a longer session. The MaxSessionDuration setting determines the maximum duration that can be requested using the DurationSeconds parameter. If users don't specify a value for the DurationSeconds parameter, their security credentials are valid for one hour by default. This applies when you use the AssumeRole* API operations or the assume-role* CLI operations but does not apply when you use those operations to create a console URL. For more information, see Using IAM roles in the IAM User Guide.  IAM role credentials provided by Amazon EC2 instances assigned to the role are not subject to the specified maximum session duration",
           args: {
             name: "integer",
-            suggestions: Array.from({ length: 13 - 1 }, (v, k) =>
+            suggestions: Array.from({ length: 13 - 1 }, (_v, k) =>
               String(k + 1)
             ),
           },

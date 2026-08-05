@@ -2,20 +2,19 @@
 // ARGUMENTS json-out etc
 const workspaceList: Fig.Generator = {
   script: ["terragrunt", "workspace", "list"],
-  postProcess: function (out) {
-    return out.split("\n").map((workspace) => {
+  postProcess: (out) =>
+    out.split("\n").map((workspace) => {
       return {
         name: workspace.replace("* ", "").trim(),
         icon: "https://terragrunt.gruntwork.io/assets/img/favicon/favicon.ico",
         description: "Workspace",
       };
-    });
-  },
+    }),
 };
 
 const addressList: Fig.Generator = {
   script: ["terragrunt", "state", "list"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     if (out.includes("No state file was found!") || out.includes("Error")) {
       return [];
     }

@@ -13,7 +13,7 @@ const fileExists = async (
 const completionSpec: Fig.Spec = {
   name: "php",
   description: "Run the PHP interpreter",
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     const subcommands = [];
 
     await Promise.all([
@@ -43,14 +43,13 @@ const completionSpec: Fig.Spec = {
       args: {
         generators: {
           template: "filepaths",
-          filterTemplateSuggestions: function (suggestions) {
-            return suggestions.filter((suggestion) => {
+          filterTemplateSuggestions: (suggestions) =>
+            suggestions.filter((suggestion) => {
               return (
                 // suggestion.name.endsWith(".php") ||
                 suggestion.name.indexOf(".") === -1
               );
-            });
-          },
+            }),
         },
       },
     };

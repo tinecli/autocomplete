@@ -5,7 +5,7 @@ const destinationGenerator: Fig.Generator = {
     strategy: "stale-while-revalidate",
     ttl: 30,
   },
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       return JSON.parse(out).map((destination: string) => ({
         name: destination,
@@ -595,7 +595,7 @@ const rootCommands: Fig.Subcommand[] = [
 const completionSpec: Fig.Spec = {
   name: "kamal",
   description: "Deploy web apps anywhere",
-  generateSpec: async (context, executeShellCommand) => {
+  generateSpec: async (_context, executeShellCommand) => {
     // TODO: use logic from this comment https://github.com/withfig/autocomplete/pull/2112#discussion_r1412879317
     const hasBinKamal =
       (
@@ -606,7 +606,7 @@ const completionSpec: Fig.Spec = {
             `while [ ! -f "$PWD/bin/kamal" ] && [ "$PWD" != "/" ]; do cd ..; done; [ -f "$PWD/bin/kamal" ] && echo "true" || echo "false"`,
           ],
         })
-      ).stdout == "true";
+      ).stdout === "true";
 
     return {
       name: "kamal",

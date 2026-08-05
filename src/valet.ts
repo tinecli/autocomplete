@@ -162,12 +162,11 @@ const completionSpec: Fig.Spec = {
         name: "command",
         generators: {
           script: ["valet", "list", "--raw"],
-          postProcess: function (out) {
-            return out.split("\n").map((command) => {
+          postProcess: (out) =>
+            out.split("\n").map((command) => {
               const name = command.split(" ")[0];
               return { name: name, description: "Command", priority: 76 };
-            });
-          },
+            }),
         },
       },
       options: [
