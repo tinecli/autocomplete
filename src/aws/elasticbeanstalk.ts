@@ -129,7 +129,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dotsArr = [];
     const otherArr = [];
     arr.map((fsObject) => {
-      if (fsObject.toLowerCase() == ".ds_store") return;
+      if (fsObject.toLowerCase() === ".ds_store") return;
       if (fsObject.slice(0, 1) === ".") dotsArr.push(fsObject);
       else otherArr.push(fsObject);
     });
@@ -196,8 +196,8 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listManagedActionsWithFilter: {
-    custom: async function (tokens, executeShellCommand) {
-      return filterManagedAction(
+    custom: async (tokens, executeShellCommand) =>
+      filterManagedAction(
         tokens,
         executeShellCommand,
         "describe-environment-managed-actions",
@@ -205,8 +205,7 @@ const generators: Record<string, Fig.Generator> = {
         "ManagedActions",
         "ActionId",
         "Scheduled"
-      );
-    },
+      ),
   },
   listIamRoleArns: {
     script: ["aws", "iam", "list-roles"],
@@ -240,16 +239,15 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listApplicationVersionLabels: {
-    custom: async function (tokens, executeShellCommand) {
-      return customGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      customGenerator(
         tokens,
         executeShellCommand,
         ["describe-application-versions"],
         ["--application-name"],
         "ApplicationVersions",
         "VersionLabel"
-      );
-    },
+      ),
   },
   listBuckets: {
     script: ["aws", "s3", "ls", "--page-size", "1000"],

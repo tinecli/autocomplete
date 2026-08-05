@@ -1,15 +1,15 @@
 import {
-  settingsSpecGenerator,
-  subsystemsGenerator,
-  themesGenerator,
-  pluginsGenerator,
-  tokensGenerators,
   invitationsGenerators,
   membersGenerators,
-  teamsGenerators,
+  pluginsGenerator,
   scriptsSpecGenerator,
+  settingsSpecGenerator,
   sshHostsGenerator,
   sshIdentityGenerator,
+  subsystemsGenerator,
+  teamsGenerators,
+  themesGenerator,
+  tokensGenerators,
   userGenerator,
 } from "./shared";
 

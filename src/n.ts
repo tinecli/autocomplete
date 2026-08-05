@@ -23,13 +23,13 @@ const versionArg: Fig.Arg = {
   ],
   generators: {
     script: ["n", "lsr", "--all"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const set = new Set<string>();
       const versions = out.split("\n").slice(1);
       for (const version of versions) {
         set.add(version); // 16.1.2
         const split = version.split(".");
-        set.add(split[0] + "." + split[1]); // 16.1
+        set.add(`${split[0]}.${split[1]}`); // 16.1
         set.add(split[0]); // 16
       }
       return Array.from(set).map((version) => {

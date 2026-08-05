@@ -11,7 +11,7 @@ const bunx: Fig.Spec = {
         "-c",
         "until [[ -d node_modules/ ]] || [[ $PWD = '/' ]]; do cd ..; done; ls -1 node_modules/.bin/`",
       ],
-      postProcess: function (out) {
+      postProcess: (out) => {
         const cli = [...npxSuggestions].reduce(
           (acc, { name }) => [...acc, name],
           []

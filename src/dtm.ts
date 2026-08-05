@@ -1,4 +1,5 @@
 import { filepaths } from "@fig/autocomplete-generators";
+
 const dtmGenerators: Record<string, Fig.Generator> = {
   plugins: {
     script: ["dtm", "list", "plugins"],

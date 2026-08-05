@@ -216,7 +216,7 @@ const listMapKeysGenerator = (map: Map<string, unknown>): Fig.Generator => {
     custom: async (
       tokens: string[],
       executeShellCommand: Fig.ExecuteCommandFunction,
-      generatorContext: Fig.GeneratorContext
+      _generatorContext: Fig.GeneratorContext
     ) => {
       const suggestions: Fig.Suggestion[] = [];
       const selected = tokens[tokens.length - 1].split(",");
@@ -348,7 +348,7 @@ const nxGenerators: NxGenerators = {
     custom: async (
       tokens: string[],
       executeShellCommand: Fig.ExecuteCommandFunction,
-      generatorContext: Fig.GeneratorContext
+      _generatorContext: Fig.GeneratorContext
     ) => {
       // suggestions to be returned
       const suggestions: Fig.Suggestion[] = [];

@@ -23,7 +23,7 @@ const suggestions: Fig.Suggestion[] = [
 // GENERATORS
 const yeomanGeneratorList: Fig.Generator = {
   script: ["yo", "--generators"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       return out
         .split("\n")

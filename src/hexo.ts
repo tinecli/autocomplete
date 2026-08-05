@@ -1,14 +1,14 @@
 const draftGenerator: Fig.Generator = {
   script: ["bash", "-c", "hexo list post | grep -E ^Draft"],
   postProcess: (out) => {
-    return out.split("\n").map(function (file) {
+    return out.split("\n").map((file) => {
       const title = file
-        .replace(/^.*   *_drafts\//g, "")
-        .replace(/  *(.*)$/g, "")
+        .replace(/^.* {2,}_drafts\//g, "")
+        .replace(/ +(.*)$/g, "")
         .replace(/.md$/g, "");
       return {
         name: title,
-        description: "Draft for " + title,
+        description: `Draft for ${title}`,
         icon: "fig://icon?type=md",
       };
     });

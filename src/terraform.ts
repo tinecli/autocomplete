@@ -1,20 +1,19 @@
 // If you edit commands or options, please copy our changes on to the terragrunt spec
 const workspaceList: Fig.Generator = {
   script: ["terraform", "workspace", "list"],
-  postProcess: function (out) {
-    return out.split("\n").map((workspace) => {
+  postProcess: (out) =>
+    out.split("\n").map((workspace) => {
       return {
         name: workspace.replace("* ", "").trim(),
         icon: "https://www.terraform.io/favicon.ico",
         description: "Workspace",
       };
-    });
-  },
+    }),
 };
 
 const addressList: Fig.Generator = {
   script: ["terraform", "state", "list"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     if (out.includes("No state file was found!") || out.includes("Error")) {
       return [];
     }

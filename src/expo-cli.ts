@@ -28,7 +28,7 @@ const _gen: Record<string, Fig.Generator> = {
           name: item.package.name,
           description: item.package.description,
         })) as Fig.Suggestion[];
-      } catch (e) {
+      } catch (_e) {
         return [];
       }
     },
@@ -2051,7 +2051,7 @@ const completionSpec: Fig.Spec = {
       description: "Install a module or other package to a project",
       priority: 64,
       args: {
-        generators: _gen[`npm`],
+        generators: _gen.npm,
         isOptional: true,
         isVariadic: true,
         name: "packages",

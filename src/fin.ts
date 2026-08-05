@@ -944,7 +944,7 @@ const completionSpec: Fig.Spec = {
     },
   ],
   // Adding dynamic subcommands
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     var new_subcommands = [];
     const { stdout: available_commands } = await executeShellCommand({
       command: "bash",

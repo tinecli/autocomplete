@@ -5,7 +5,7 @@ function processIcon(path: string): string {
   if (idx === -1) {
     return "fig://icon?type=gear";
   }
-  return "fig://" + path.slice(0, idx + 4);
+  return `fig://${path.slice(0, idx + 4)}`;
 }
 
 const completionSpec: Fig.Spec = {

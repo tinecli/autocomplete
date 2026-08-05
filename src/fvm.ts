@@ -104,7 +104,7 @@ const completionSpec: Fig.Spec = {
         ],
         generators: {
           script: ["fvm", "releases"],
-          postProcess: function (out): Fig.Suggestion[] {
+          postProcess: (out): Fig.Suggestion[] => {
             const matches = out.match(semverRegex);
             const matchesSet = [...new Set(matches)];
             return matchesSet.map((match) => ({ name: match })).reverse();

@@ -17,7 +17,7 @@ E  F-1
 M  L+1
 %%  %
 %c'C'  the single character C
-%c'\OOO'  the character with octal code OOO`,
+%c'OOO'  the character with octal code OOO`,
     },
   }));
 
@@ -32,7 +32,7 @@ const lineFormatOptions = (names: string[]) =>
 %[-][WIDTH][.[PREC]]{doxX}n  printf-style spec for input line number
 %%  %
 %c'C'  the single character C
-%c'\OOO'  the character with octal code OOO`,
+%c'OOO'  the character with octal code OOO`,
     },
   }));
 

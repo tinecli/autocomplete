@@ -95,7 +95,7 @@ const customGenerator = async (
   return [];
 };
 const MultiSuggestionsGenerator = async (
-  tokens: string[],
+  _tokens: string[],
   executeShellCommand: Fig.ExecuteCommandFunction,
   enabled: {
     command: string[];
@@ -179,7 +179,7 @@ const sortSuggestions = (arr: string[], isS3?: boolean): Fig.Suggestion[] => {
     const dots_arr = [];
     const other_arr = [];
     arr.map((fsObject) => {
-      if (fsObject.toLowerCase() == ".ds_store") return;
+      if (fsObject.toLowerCase() === ".ds_store") return;
       if (fsObject.slice(0, 1) === ".") {
         dots_arr.push(fsObject);
       } else {
@@ -299,7 +299,7 @@ const generators = {
   listStartedBy: {
     custom: async (tokens, executeShellCommand) => {
       const out = await executeShellCommand("aws ecs list-tasks");
-      const list = JSON.parse(out)["taskArns"];
+      const list = JSON.parse(out).taskArns;
       const tasks = list.map((arn) => ({
         command: ["ecs", "describe-tasks", "--tasks", arn],
         parentKey: "tasks",
@@ -318,7 +318,7 @@ const generators = {
       const out = await executeShellCommand(
         `aws ecs list-tasks --cluster ${param}`
       );
-      const list = JSON.parse(out)["taskArns"];
+      const list = JSON.parse(out).taskArns;
       const tasks = list.map((arn) => ({
         command: ["ecs", "describe-tasks", "--tasks", arn],
         parentKey: "tasks",
@@ -353,7 +353,7 @@ const generators = {
         const out = await executeShellCommand(
           `aws deploy list-deployment-groups --application-name ${param}`
         );
-        const list = JSON.parse(out)["deploymentGroups"];
+        const list = JSON.parse(out).deploymentGroups;
         return list.map((group) => {
           return {
             name: group,

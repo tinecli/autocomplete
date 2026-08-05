@@ -6,7 +6,7 @@
 const completionSpec: Fig.Spec = {
   name: "xc",
   description: "List tasks from an xc-compatible markdown file",
-  generateSpec: async (context, executeShellCommand) => {
+  generateSpec: async (_context, executeShellCommand) => {
     const options: Fig.Option[] = [
       {
         name: ["-f", "-file"],

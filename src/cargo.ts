@@ -209,10 +209,10 @@ const featuresGenerator: Fig.Generator = {
 };
 
 const makeTasksGenerator: Fig.Generator = {
-  custom: async function (tokens, executeCommand) {
+  custom: async (tokens, executeCommand) => {
     let makefileLocation = "Makefile.toml";
 
-    const makefileFlagIdx = tokens.findIndex((param) => param === "--makefile");
+    const makefileFlagIdx = tokens.indexOf("--makefile");
     if (makefileFlagIdx !== -1 && tokens.length > makefileFlagIdx + 1)
       makefileLocation = tokens[makefileFlagIdx + 1];
 
@@ -226,6 +226,7 @@ const makeTasksGenerator: Fig.Generator = {
     let match;
     const tasks = [];
 
+    // biome-ignore lint/suspicious/noAssignInExpressions: standard regex.exec() iteration idiom
     while ((match = taskRegex.exec(stdout)) !== null) {
       tasks.push({
         name: match[1],
@@ -491,7 +492,7 @@ const configGenerator: Fig.Generator = keyValue({
     name: key,
     ...other,
   })),
-  values: async (tokens, execute) => {
+  values: async (tokens, _execute) => {
     const key = tokens[tokens.length - 1].split("=")?.[0];
     const pair = configPairs[key];
     if (pair?.tomlSuggestions) {
@@ -502,7 +503,7 @@ const configGenerator: Fig.Generator = keyValue({
 });
 
 const completionSpec: (toolchain?: boolean) => Fig.Spec = (
-  toolchain = true
+  _toolchain = true
 ) => ({
   name: "cargo",
   icon: "📦",
@@ -5851,7 +5852,7 @@ const completionSpec: (toolchain?: boolean) => Fig.Spec = (
     const subcommands: Fig.Subcommand[] = [];
     const commands = listOutput
       .split("\n")
-      .filter((_, i) => i != 0)
+      .filter((_, i) => i !== 0)
       .map((line) => line.trim().split(/\s+/, 1)[0]);
 
     if (commands.includes("fmt")) {

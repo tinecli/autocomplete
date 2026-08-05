@@ -1,4 +1,5 @@
 import { filepaths } from "@fig/autocomplete-generators";
+
 const restoreRestoreExactOptions: Fig.Option[] = [
   {
     name: "--source",

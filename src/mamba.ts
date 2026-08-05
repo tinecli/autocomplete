@@ -42,13 +42,13 @@ const getMambaEnvs: Fig.Generator = {
   cache: {
     strategy: "stale-while-revalidate",
   },
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const availableEnvs: Fig.Suggestion[] = [];
     // Skip first 2 lines as they are just headers for the output
     for (let i = 2; i < lines.length; i++) {
-      const parts = lines[i].split(" ").filter((p) => p != "");
-      const isActive = parts[1] == "*";
+      const parts = lines[i].split(" ").filter((p) => p !== "");
+      const isActive = parts[1] === "*";
       availableEnvs.push({
         name: parts[0],
         description: parts[parts.length - 1],
@@ -66,7 +66,7 @@ const getInstalledPackages: Fig.Generator = {
   cache: {
     strategy: "stale-while-revalidate",
   },
-  postProcess: function (out) {
+  postProcess: (out) => {
     let installedPackages: Array<Fig.Suggestion> = [];
     try {
       const parsed: Array<Package> = JSON.parse(out);
@@ -78,7 +78,7 @@ const getInstalledPackages: Fig.Generator = {
         };
       });
       return installedPackages;
-    } catch (e) {
+    } catch (_e) {
       return installedPackages;
     }
   },
@@ -107,7 +107,7 @@ const condaSearchGenerator: Fig.Generator = {
         }
       );
       return searchResults;
-    } catch (e) {
+    } catch (_e) {
       return searchResults;
     }
   },

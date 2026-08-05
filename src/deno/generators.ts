@@ -631,6 +631,7 @@ async function getDenoConfig(
         "until [[ ( -f deno.json || -f deno.jsonc || $PWD = '/' ) ]]; do cd ..; done; \\cat deno.json 2>/dev/null || \\cat deno.jsonc 2>/dev/null",
       ],
     });
+    jsonString = stdout;
   }
   try {
     return JSON.parse(stripJsonComments(jsonString));
@@ -686,7 +687,7 @@ export const generateInstalledDenoScripts: Fig.Generator = {
 
 // Our transpilation causes this to become `new RegExp` which we don't want to
 // run on every invocation of the function
-const httpsRe = /^(https?:\/\/.*\.(?:m?[jt]sx?))(?:\?.*)?(?:\#.*)?$/;
+const httpsRe = /^(https?:\/\/.*\.(?:m?[jt]sx?))(?:\?.*)?(?:#.*)?$/;
 
 const clipboardTests: ((str: string) => string | boolean)[] = [
   // HTTPS test

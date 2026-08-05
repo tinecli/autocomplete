@@ -9,7 +9,7 @@ const getPackages: Fig.Generator = {
 
 const getBranches: Fig.Generator = {
   script: ["git", "branch", "--no-color"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     if (out.startsWith("fatal:")) {
       return [];
     }
@@ -37,7 +37,7 @@ const getAllScriptsFromPackages: Fig.Generator = {
     let scripts: string[] = [];
     packages.forEach((packageContent) => {
       const parsed = JSON.parse(packageContent);
-      scripts = scripts.concat(Object.keys(parsed["scripts"]));
+      scripts = scripts.concat(Object.keys(parsed.scripts));
     });
 
     return Array.from(new Set(scripts)).map((scriptName) => ({

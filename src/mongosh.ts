@@ -1,7 +1,5 @@
 // https://docs.mongodb.com/mongodb-shell/reference/options/
 
-import { decodedTextSpanIntersectsWith } from "typescript";
-
 const completionSpec: Fig.Spec = {
   name: "mongosh",
   description:

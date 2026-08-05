@@ -1,15 +1,14 @@
 const servicesGenerator = (action: string): Fig.Generator => ({
   script: ["bash", "-c", "brew services list | sed -e 's/ .*//' | tail -n +2"],
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .split("\n")
       .filter((line) => !line.includes("unbound"))
       .map((line) => ({
         name: line,
         icon: "fig://icon?type=package",
         description: `${action} ${line}`,
-      }));
-  },
+      })),
 });
 
 const repositoriesGenerator = (): Fig.Generator => ({
@@ -21,51 +20,47 @@ const repositoriesGenerator = (): Fig.Generator => ({
 
 const formulaeGenerator: Fig.Generator = {
   script: ["brew", "list", "-1"],
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .split("\n")
       .filter((line) => !line.includes("="))
       .map((formula) => ({
         name: formula,
         icon: "🍺",
         description: "Installed formula",
-      }));
-  },
+      })),
 };
 
 const outdatedformulaeGenerator: Fig.Generator = {
   script: ["brew", "outdated", "-q"],
-  postProcess: function (out) {
-    return out.split("\n").map((formula) => ({
+  postProcess: (out) =>
+    out.split("\n").map((formula) => ({
       name: formula,
       icon: "🍺",
       description: "Outdated formula",
-    }));
-  },
+    })),
 };
 
 const generateAllFormulae: Fig.Generator = {
   script: ["brew", "formulae"],
-  postProcess: function (out) {
-    return out.split("\n").map((formula) => ({
+  postProcess: (out) =>
+    out.split("\n").map((formula) => ({
       name: formula,
       icon: "🍺",
       description: "Formula",
       priority: 51,
-    }));
-  },
+    })),
 };
 
 const generateAllCasks: Fig.Generator = {
   script: ["brew", "casks"],
-  postProcess: function (out) {
-    return out.split("\n").map((cask) => ({
+  postProcess: (out) =>
+    out.split("\n").map((cask) => ({
       name: cask,
       icon: "🍺",
       description: "Cask",
       priority: 52,
-    }));
-  },
+    })),
 };
 const generateAliases: Fig.Generator = {
   script: [
@@ -73,16 +68,15 @@ const generateAliases: Fig.Generator = {
     "-c",
     'find ~/.brew-aliases/ -type f ! -name "*.*" -d 1 | sed "s/.*\\///"',
   ],
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .split("\n")
       .filter((line) => line && line.trim() !== "")
       .map((line) => ({
         name: line,
         icon: "fig://icon?type=command",
         description: `Execute alias ${line}`,
-      }));
-  },
+      })),
 };
 
 const commonOptions: Fig.Option[] = [
@@ -1279,15 +1273,14 @@ const completionSpec: Fig.Spec = {
 
             generators: {
               script: ["brew", "list", "-1", "--cask"],
-              postProcess: function (out) {
-                return out.split("\n").map((formula) => {
+              postProcess: (out) =>
+                out.split("\n").map((formula) => {
                   return {
                     name: formula,
                     icon: "🍺",
                     description: "Installed formula",
                   };
-                });
-              },
+                }),
             },
           },
         },

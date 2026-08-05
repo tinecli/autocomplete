@@ -1,7 +1,7 @@
 const getInstalledBrowsers: Fig.Generator = {
   script: ["defaultbrowser"],
-  postProcess: function (out) {
-    return out.split("\n").map((line) => {
+  postProcess: (out) =>
+    out.split("\n").map((line) => {
       /* We ignore the already set browser */
       if (line.startsWith("*")) {
         return {};
@@ -10,8 +10,7 @@ const getInstalledBrowsers: Fig.Generator = {
       return {
         name: browserName,
       };
-    });
-  },
+    }),
 };
 
 const completionSpec: Fig.Spec = {

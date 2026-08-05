@@ -9,8 +9,7 @@ const _prefix_string_for_file_and_folder_suggestions = "file://";
 
 var customArgument: Fig.Arg = {
   name: "FILE/FOLDER",
-  description:
-    "must start with " + _prefix_string_for_file_and_folder_suggestions,
+  description: `must start with ${_prefix_string_for_file_and_folder_suggestions}`,
   generators: {
     script: (tokens) => {
       var baseLsCommand = ["ls", "-1ApL"];
@@ -68,7 +67,7 @@ var customArgument: Fig.Arg = {
         var other_arr = [];
 
         arr.map((elm) => {
-          if (elm.toLowerCase() == ".ds_store") return;
+          if (elm.toLowerCase() === ".ds_store") return;
           if (elm.slice(0, 1) === ".") dots_arr.push(elm);
           else other_arr.push(elm);
         });

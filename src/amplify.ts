@@ -1,8 +1,8 @@
 const envNameGenerator: Fig.Generator = {
   script: ["amplify", "env", "list", "--json"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const envContent = JSON.parse(out);
-    return envContent["envs"].map((env: string) => {
+    return envContent.envs.map((env: string) => {
       return { name: env, description: "Environment" };
     });
   },

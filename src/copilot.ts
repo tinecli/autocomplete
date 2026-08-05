@@ -5,7 +5,7 @@ const applicationName: Fig.Generator = {
   // TODO: I feel like there's a better way to do this.
   // There's only ever expected to be one `application` key.
   postProcess: (output) => {
-    if (output.trim() == "") {
+    if (output.trim() === "") {
       return [];
     }
 

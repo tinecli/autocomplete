@@ -9,7 +9,7 @@ const stacksGenerator: Fig.Generator = {
         name: stack.name,
         description: stack.description,
       }));
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   },

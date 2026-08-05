@@ -46,7 +46,7 @@ const completionSpec: Fig.Spec = {
             ),
           });
         });
-    } catch (err) {
+    } catch (_err) {
       //
     }
 

@@ -69,7 +69,7 @@ const sortSuggestions = (arr: string[], isS3?: boolean): Fig.Suggestion[] => {
     const other_arr = [];
 
     arr.map((fsObject) => {
-      if (fsObject.toLowerCase() == ".ds_store") return;
+      if (fsObject.toLowerCase() === ".ds_store") return;
       if (fsObject.slice(0, 1) === ".") {
         dots_arr.push(fsObject);
       } else {
@@ -217,7 +217,7 @@ const generators: Record<string, Fig.Generator> = {
       return [...baseLsCommand, folderPath];
     },
     postProcess: (out) => {
-      if (out == "") {
+      if (out === "") {
         return [];
       }
 
@@ -264,14 +264,17 @@ const generators: Record<string, Fig.Generator> = {
 
           // If output line's third column is a number (File size column)
           // we can assume that it is a file so do not append trailing '/'
-          if (!isNaN(parseFloat(parts[2])) && isFinite(parseInt(parts[2]))) {
+          if (
+            !Number.isNaN(parseFloat(parts[2])) &&
+            Number.isFinite(parseInt(parts[2], 10))
+          ) {
             return s3Path;
           }
 
           // Any leftover lines are bucket names
           // just append '/' at the end
           if (!hasBackSlash) {
-            s3Path = s3Path + "/";
+            s3Path = `${s3Path}/`;
           }
         } catch (e) {
           console.log(e);
@@ -298,7 +301,7 @@ const generators: Record<string, Fig.Generator> = {
   // just bucket names
   listBuckets: {
     script: ["aws", "s3", "ls", "--page-size", "1000"],
-    postProcess: function (out, context) {
+    postProcess: (out, _context) => {
       try {
         return out.split("\n").map((line) => {
           const parts = line.split(/\s+/);
@@ -324,11 +327,11 @@ const generators: Record<string, Fig.Generator> = {
     // --page-size does not affect the number of items returned,
     // just chunks request so it won't timeout
     script: ["aws", "kms", "list-keys", "--page-size", "100"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["Keys"];
+        const list = JSON.parse(out).Keys;
         return list.map((item) => ({
-          name: item["KeyId"],
+          name: item.KeyId,
         }));
       } catch (error) {
         console.error(error);

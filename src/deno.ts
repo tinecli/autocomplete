@@ -3,8 +3,8 @@ import {
   generateInstalledDenoScripts,
   generateLintRules,
   generateTasks,
-  generateVersions,
   generateUrlScript,
+  generateVersions,
 } from "./deno/generators";
 
 const completion: Fig.Spec = {

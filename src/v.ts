@@ -106,7 +106,7 @@ const completionSpec: Fig.Spec = {
               .trim()
               .slice(19, -1) // remove starting phrase "Known help topics: " and trailing dot
               .split(", ")
-              .filter((topic) => topic != "other")
+              .filter((topic) => topic !== "other")
               .map((topic) => ({
                 priority: 0,
                 name: topic,

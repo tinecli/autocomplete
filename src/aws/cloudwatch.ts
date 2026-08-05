@@ -235,7 +235,7 @@ const listDimensionTypes = async (
     const metrics = JSON.parse(stdout)[parentKey];
     // traverse JSON & compose key-value style suggestion
     return metrics
-      .map((metric) => {
+      .flatMap((metric) => {
         return metric[childKey].map((dimension) => {
           const composite = `Name=${dimension.Name},Value=${dimension.Value}`;
           return {
@@ -245,7 +245,6 @@ const listDimensionTypes = async (
           };
         });
       })
-      .flat()
       .filter(uniqueNames);
   } catch (e) {
     console.log(e);
@@ -253,7 +252,7 @@ const listDimensionTypes = async (
   return [];
 };
 const MultiSuggestionsGenerator = async (
-  tokens: string[],
+  _tokens: string[],
   executeShellCommand: Fig.ExecuteCommandFunction,
   enabled: {
     command: string[];
@@ -285,7 +284,7 @@ const MultiSuggestionsGenerator = async (
   return [];
 };
 const getResultList = async (
-  tokens: string[],
+  _tokens: string[],
   executeShellCommand: Fig.ExecuteCommandFunction,
   args: string[],
   key: string
@@ -331,7 +330,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dotsArr = [];
     const otherArr = [];
     arr.map((elm) => {
-      if (elm.toLowerCase() == ".ds_store") return;
+      if (elm.toLowerCase() === ".ds_store") return;
       if (elm.slice(0, 1) === ".") dotsArr.push(elm);
       else otherArr.push(elm);
     });
@@ -412,52 +411,48 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listMetricsForNamespace: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "list-metrics",
         ["--namespace"],
         "Metrics",
         "MetricName"
-      );
-    },
+      ),
   },
   listMetricDimensions: {
-    custom: async function (tokens, executeShellCommand) {
-      return listDimensionTypes(
+    custom: async (tokens, executeShellCommand) =>
+      listDimensionTypes(
         tokens,
         executeShellCommand,
         "list-metrics",
         "--namespace",
         "Metrics",
         "Dimensions"
-      );
-    },
+      ),
   },
   listAdDimensions: {
-    custom: async function (tokens, executeShellCommand) {
-      return listDimensionTypes(
+    custom: async (tokens, executeShellCommand) =>
+      listDimensionTypes(
         tokens,
         executeShellCommand,
         "describe-anomaly-detectors",
         "--namespace",
         "AnomalyDetectors",
         "Dimensions"
-      );
-    },
+      ),
   },
   listAssociatedStats: {
-    custom: async function (tokens, executeShellCommand) {
-      return listCustomGenerator(
+    custom: async (tokens, executeShellCommand) =>
+      listCustomGenerator(
         tokens,
         executeShellCommand,
         "describe-anomaly-detectors",
         ["--namespace", "--metric-name"],
         "AnomalyDetectors",
         "Stat"
-      );
-    },
+      ),
   },
   listDashboards: {
     script: ["aws", "cloudwatch", "list-dashboards"],
@@ -493,7 +488,7 @@ const generators: Record<string, Fig.Generator> = {
     // AWS is dumb, and firehose cli works totally different than other CLIs.
     // First we need to get a list of stream names, then we have to describe each
     // individually, to get an ARN
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       // get list of stream names
       const result = await getResultList(
         tokens,
@@ -1420,7 +1415,7 @@ const completionSpec: Fig.Spec = {
             "The maximum number of contributors to include in the report. The range is 1 to 100. If you omit this, the default of 10 is used",
           args: {
             name: "integer",
-            suggestions: Array.from({ length: 101 - 1 }, (v, k) =>
+            suggestions: Array.from({ length: 101 - 1 }, (_v, k) =>
               String(k + 1)
             ),
           },

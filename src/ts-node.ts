@@ -1,5 +1,5 @@
-import { dependenciesGenerator } from "./npm";
 import { filepaths } from "@fig/autocomplete-generators";
+import { dependenciesGenerator } from "./npm";
 
 const completionSpec: Fig.Spec = {
   name: "ts-node",
@@ -70,8 +70,8 @@ const completionSpec: Fig.Spec = {
         name: "project",
         generators: {
           template: "filepaths",
-          filterTemplateSuggestions: function (paths) {
-            return paths
+          filterTemplateSuggestions: (paths) =>
+            paths
               .filter((file) => {
                 return file.name.match(/.*\.json$/g) || file.name.endsWith("/");
               })
@@ -83,8 +83,7 @@ const completionSpec: Fig.Spec = {
                   ...file,
                   priority: isTsConfig ? 100 : isJsFile && 76,
                 };
-              });
-          },
+              }),
         },
       },
     },

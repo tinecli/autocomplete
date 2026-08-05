@@ -48,7 +48,7 @@ const getCacheTypes = async (executeShellCommand) => {
 const completionSpec: Fig.Spec = {
   name: "magento",
   description: "Open-source E-commerce",
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     const { stdout } = await executeShellCommand({
       command: "bin/magento",
       args: ["list", "--format=json", "--raw"],

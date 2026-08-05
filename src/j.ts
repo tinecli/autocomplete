@@ -13,7 +13,7 @@ const completionSpec: Fig.Spec = {
           command: "cat",
           // eslint-disable-next-line @withfig/fig-linter/no-useless-arrays
           args: [
-            `${context.environmentVariables["HOME"]}/Library/autojump/autojump.txt`,
+            `${context.environmentVariables.HOME}/Library/autojump/autojump.txt`,
           ],
         });
         const lines = stdout.split("\n").map((line) => {

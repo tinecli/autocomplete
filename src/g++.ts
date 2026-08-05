@@ -1,5 +1,5 @@
-import { gccBase } from "./gcc";
 import { stdCPPSuggestions } from "./clang";
+import { gccBase } from "./gcc";
 
 const completionSpec: Fig.Spec = {
   ...gccBase,

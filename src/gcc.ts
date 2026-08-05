@@ -1,4 +1,4 @@
-import { stdCSuggestions, stdCPPSuggestions } from "./clang";
+import { stdCPPSuggestions, stdCSuggestions } from "./clang";
 
 export const stdOption: Fig.Option = {
   name: "-std",

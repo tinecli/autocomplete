@@ -57,8 +57,8 @@ const listGenerator: Fig.Generator = {
   script: ["launchctl", "list"],
   // The list command outputs 3 columns: PID	Status	Label
   // we want the last column ([2])
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .split("\n")
       .slice(1)
       .map((line) => {
@@ -67,8 +67,7 @@ const listGenerator: Fig.Generator = {
           name: parts[2],
         };
       })
-      .filter((data) => data.name);
-  },
+      .filter((data) => data.name),
 };
 
 const labelArg = {

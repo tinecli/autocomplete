@@ -181,7 +181,7 @@ const completionSpec: Fig.Spec = {
           }),
           {
             name: "HEAD",
-            insertValue: "HEAD" + (token?.includes("..") ? "" : ".."),
+            insertValue: `HEAD${token?.includes("..") ? "" : ".."}`,
             icon: "fig://icon?type=node",
             description: "The current commit",
             priority: 5,

@@ -1,5 +1,3 @@
-import { filepaths } from "@fig/autocomplete-generators";
-
 const CATEGORY_EMOJI = "📦";
 const LINT_RULE_EMOJI = "🚨";
 
@@ -97,11 +95,10 @@ const lintRuleGenerator: Fig.Generator = {
       })
       .map<Fig.Suggestion>((cols) => {
         const [, rule, plugin, maybeCheckmark] = cols;
-        const isDefault = maybeCheckmark != "";
+        const isDefault = maybeCheckmark !== "";
         return {
           name: rule,
-          description:
-            `${plugin} plugin` + (isDefault ? " (enabled by default)" : ""),
+          description: `${plugin} plugin${isDefault ? " (enabled by default)" : ""}`,
           icon: LINT_RULE_EMOJI,
         };
       });

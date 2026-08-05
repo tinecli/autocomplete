@@ -46,61 +46,55 @@ const dockerGenerators: Record<string, Fig.Generator> = {
   },
   allLocalImages: {
     script: ["docker", "image", "ls", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: `${i.ID}`,
           displayName: `${i.Repository} - ${i.ID}`,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   allLocalImagesWithRepository: {
     script: ["docker", "image", "ls", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: i.Repository,
           displayName: `${i.Repository} - ${i.ID}`,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   dockerHubSearch: {
-    script: function (context) {
+    script: (context) => {
       if (context[context.length - 1] === "") return undefined;
       const searchTerm = context[context.length - 1];
       return ["docker", "search", searchTerm, "--format", "{{ json . }}"];
     },
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: `${i.Name}`,
           icon: "fig://icon?type=docker",
-        }));
-    },
-    trigger: function () {
-      return true;
-    },
+        })),
+    trigger: () => true,
   },
   allDockerContexts: {
     script: ["docker", "context", "list", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: i.Name,
           description: i.Description,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   listDockerNetworks: {
     script: ["docker", "network", "list", "--format", "{{ json . }}"],
@@ -108,8 +102,8 @@ const dockerGenerators: Record<string, Fig.Generator> = {
   },
   listDockerSwarmNodes: {
     script: ["docker", "node", "list", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
@@ -117,8 +111,7 @@ const dockerGenerators: Record<string, Fig.Generator> = {
           displayName: `${i.ID} - ${i.Hostname}`,
           description: i.Status,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   listDockerPlugins: {
     script: ["docker", "plugin", "list", "--format", "{{ json . }}"],
@@ -130,53 +123,49 @@ const dockerGenerators: Record<string, Fig.Generator> = {
   },
   listDockerServices: {
     script: ["docker", "service", "list", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: i.Name,
           description: i.Image,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   listDockerServicesReplicas: {
     script: ["docker", "service", "list", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: `${i.Name}=`,
           description: i.Image,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   listDockerStacks: {
     script: ["docker", "stack", "list", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: i.Name,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
   listDockerVolumes: {
     script: ["docker", "volume", "list", "--format", "{{ json . }}"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((line) => JSON.parse(line))
         .map((i) => ({
           name: i.Name,
           icon: "fig://icon?type=docker",
-        }));
-    },
+        })),
   },
 };
 
@@ -341,10 +330,8 @@ const sharedCommands: Record<string, Fig.Subcommand> = {
         args: {
           name: "target build stage",
           generators: {
-            trigger: function () {
-              return true;
-            },
-            script: function (context) {
+            trigger: () => true,
+            script: (context) => {
               let fileFlagIndex, dockerfilePath;
               if (context.includes("-f")) {
                 fileFlagIndex = context.indexOf("-f");
@@ -358,7 +345,7 @@ const sharedCommands: Record<string, Fig.Subcommand> = {
 
               return ["grep", "-iE", "FROM.*AS", dockerfilePath];
             },
-            postProcess: function (out) {
+            postProcess: (out) => {
               // This just searches the Dockerfile for the alias name after AS,
               // and due to the grep above, will only match lines where FROM and AS
               // are on the same line. This could certainly be made more robust
@@ -1991,16 +1978,15 @@ default-cgroupns-mode option on the daemon (default)`,
             "--format",
             "{{.Repository}} {{.Size}} {{.Tag}} {{.ID}}",
           ],
-          postProcess: function (out) {
-            return out.split("\n").map((image) => {
+          postProcess: (out) =>
+            out.split("\n").map((image) => {
               const [repo, size, tag, id] = image.split(" ");
               return {
                 name: repo,
                 description: `${id}@${tag} - ${size}`,
                 icon: "fig://icon?type=docker",
               };
-            });
-          },
+            }),
         },
       },
       {
@@ -2611,7 +2597,7 @@ const completionSpec: Fig.Spec = {
         generators: [
           {
             script: ["docker", "ps", "-a", "--format", "{{ json . }}"],
-            postProcess: function (out) {
+            postProcess: (out) => {
               const allLines = out.split("\n").map((line) => JSON.parse(line));
               return allLines.map((i) => ({
                 name: i.ID,
@@ -2621,7 +2607,7 @@ const completionSpec: Fig.Spec = {
           },
           {
             script: ["docker", "images", "-a", "--format", "{{ json . }}"],
-            postProcess: function (out) {
+            postProcess: (out) => {
               const allLines = out.split("\n").map((line) => JSON.parse(line));
               return allLines.map((i) => {
                 let displayName;
@@ -2643,7 +2629,7 @@ const completionSpec: Fig.Spec = {
           },
           {
             script: ["docker", "volume", "ls", "--format", "{{ json . }}"],
-            postProcess: function (out) {
+            postProcess: (out) => {
               const allLines = out.split("\n").map((line) => JSON.parse(line));
               return allLines.map((i) => ({
                 name: i.Name,

@@ -51,7 +51,7 @@ export const nodeClis = new Set([
 
 // generate global package list from global package.json file
 const getGlobalPackagesGenerator: Fig.Generator = {
-  custom: async (tokens, executeCommand, generatorContext) => {
+  custom: async (tokens, executeCommand, _generatorContext) => {
     const { stdout: yarnGlobalDir } = await executeCommand({
       command: "yarn",
       args: ["global", "dir"],
@@ -63,12 +63,12 @@ const getGlobalPackagesGenerator: Fig.Generator = {
       args: [`${yarnGlobalDir.trim()}/package.json`],
     });
 
-    if (stdout.trim() == "") return [];
+    if (stdout.trim() === "") return [];
 
     try {
       const packageContent = JSON.parse(stdout);
-      const dependencyScripts = packageContent["dependencies"] || {};
-      const devDependencyScripts = packageContent["devDependencies"] || {};
+      const dependencyScripts = packageContent.dependencies || {};
+      const devDependencyScripts = packageContent.devDependencies || {};
       const dependencies = [
         ...Object.keys(dependencyScripts),
         ...Object.keys(devDependencyScripts),
@@ -82,7 +82,7 @@ const getGlobalPackagesGenerator: Fig.Generator = {
         name: dependencyName,
         icon: "📦",
       }));
-    } catch (e) {}
+    } catch (_e) {}
 
     return [];
   },
@@ -92,7 +92,7 @@ const getGlobalPackagesGenerator: Fig.Generator = {
 const allDependenciesGenerator: Fig.Generator = {
   script: ["yarn", "list", "--depth=0", "--json"],
   postProcess: (out) => {
-    if (out.trim() == "") return [];
+    if (out.trim() === "") return [];
 
     try {
       const packageContent = JSON.parse(out);
@@ -101,15 +101,15 @@ const allDependenciesGenerator: Fig.Generator = {
         name: dependency.name.split("@")[0],
         icon: "📦",
       }));
-    } catch (e) {}
+    } catch (_e) {}
     return [];
   },
 };
 
 const configList: Fig.Generator = {
   script: ["yarn", "config", "list"],
-  postProcess: function (out) {
-    if (out.trim() == "") {
+  postProcess: (out) => {
+    if (out.trim() === "") {
       return [];
     }
 
@@ -120,14 +120,14 @@ const configList: Fig.Generator = {
       // TODO: fix hacky code
       // reason: JSON parse was not working without double quotes
       output = output
-        .replace(/\'/gi, '"')
+        .replace(/'/gi, '"')
         .replace("lastUpdateCheck", '"lastUpdateCheck"')
         .replace("registry", '"lastUpdateCheck"');
       const configObject = JSON.parse(output);
       if (configObject) {
         return Object.keys(configObject).map((key) => ({ name: key }));
       }
-    } catch (e) {}
+    } catch (_e) {}
 
     return [];
   },
@@ -139,16 +139,16 @@ export const dependenciesGenerator: Fig.Generator = {
     "-c",
     "until [[ -f package.json ]] || [[ $PWD = '/' ]]; do cd ..; done; cat package.json",
   ],
-  postProcess: function (out, context = []) {
+  postProcess: (out, context = []) => {
     if (out.trim() === "") {
       return [];
     }
 
     try {
       const packageContent = JSON.parse(out);
-      const dependencies = packageContent["dependencies"] ?? {};
-      const devDependencies = packageContent["devDependencies"];
-      const optionalDependencies = packageContent["optionalDependencies"] ?? {};
+      const dependencies = packageContent.dependencies ?? {};
+      const devDependencies = packageContent.devDependencies;
+      const optionalDependencies = packageContent.optionalDependencies ?? {};
       Object.assign(dependencies, devDependencies, optionalDependencies);
 
       return Object.keys(dependencies)
@@ -350,9 +350,9 @@ const commonOptions: Fig.Option[] = [
 ];
 
 export const createCLIsGenerator: Fig.Generator = {
-  script: function (context) {
+  script: (context) => {
     if (context[context.length - 1] === "") return undefined;
-    const searchTerm = "create-" + context[context.length - 1];
+    const searchTerm = `create-${context[context.length - 1]}`;
     return [
       "curl",
       "-s",
@@ -364,7 +364,7 @@ export const createCLIsGenerator: Fig.Generator = {
   cache: {
     ttl: 100 * 24 * 60 * 60 * 3, // 3 days
   },
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       return JSON.parse(out).results.map(
         (item: { package: { name: string; description: string } }) =>
@@ -373,7 +373,7 @@ export const createCLIsGenerator: Fig.Generator = {
             description: item.package.description,
           }) as Fig.Suggestion
       ) as Fig.Suggestion[];
-    } catch (e) {
+    } catch (_e) {
       return [];
     }
   },
@@ -382,7 +382,7 @@ export const createCLIsGenerator: Fig.Generator = {
 const completionSpec: Fig.Spec = {
   name: "yarn",
   description: "Manage packages and run scripts",
-  generateSpec: async (tokens, executeShellCommand) => {
+  generateSpec: async (_tokens, executeShellCommand) => {
     const binaries = (
       await executeShellCommand({
         command: "bash",
@@ -837,7 +837,7 @@ const completionSpec: Fig.Spec = {
         name: "cli",
         generators: createCLIsGenerator,
         loadSpec: async (token) => ({
-          name: "create-" + token,
+          name: `create-${token}`,
           type: "global",
         }),
         isCommand: true,
@@ -1566,19 +1566,19 @@ const completionSpec: Fig.Spec = {
                     ttl: 60_000, // 60s
                   },
                   script: ["cat", `${location}/package.json`],
-                  postProcess: function (out: string) {
-                    if (out.trim() == "") {
+                  postProcess: (out: string) => {
+                    if (out.trim() === "") {
                       return [];
                     }
                     try {
                       const packageContent = JSON.parse(out);
-                      const scripts = packageContent["scripts"];
+                      const scripts = packageContent.scripts;
                       if (scripts) {
                         return Object.keys(scripts).map((script) => ({
                           name: script,
                         }));
                       }
-                    } catch (e) {}
+                    } catch (_e) {}
                     return [];
                   },
                 },

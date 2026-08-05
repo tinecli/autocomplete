@@ -18,6 +18,7 @@ function parseSnapshotList(output: string): Snapshots[] {
     // Trim all multiples spaces into only single one
     .replace(/ +/g, " ")
     // Remove all terminal escaping sequence
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: intentionally matching the ESC control character to strip ANSI escapes
     .replace(/\u001b\[[0-9;]*[A-Za-z]/g, "")
     .split("\n");
   if (outputSplit.length > 4 && outputSplit[1].startsWith("NAME")) {
@@ -43,6 +44,7 @@ function parsePreviewDatabaseList(output: string): PreviewDatabase[] {
     // Trim all multiples spaces into only single one
     .replace(/ +/g, " ")
     // Remove all terminal escaping sequence
+    // biome-ignore lint/suspicious/noControlCharactersInRegex: intentionally matching the ESC control character to strip ANSI escapes
     .replace(/\u001b\[[0-9;]*[A-Za-z]/g, "")
     .split("\n");
   // if there is at least one database

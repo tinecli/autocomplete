@@ -18,18 +18,16 @@ const completionSpec: Fig.Spec = {
             description: "Choose a template",
             generators: {
               script: ["expressots", "templates"],
-              postProcess: function (out) {
-                return [
-                  {
-                    name: "opinionated",
-                    description: "An opinionated ExpressoTS application",
-                  },
-                  {
-                    name: "non-opinionated",
-                    description: "An ExpressoTS application",
-                  },
-                ];
-              },
+              postProcess: (_out) => [
+                {
+                  name: "opinionated",
+                  description: "An opinionated ExpressoTS application",
+                },
+                {
+                  name: "non-opinionated",
+                  description: "An ExpressoTS application",
+                },
+              ],
             },
           },
         },
@@ -41,22 +39,20 @@ const completionSpec: Fig.Spec = {
             description: "Choose a package manager",
             generators: {
               script: ["expressots", "package", "manager"],
-              postProcess: function (out) {
-                return [
-                  {
-                    name: "npm",
-                    description: "",
-                  },
-                  {
-                    name: "yarn",
-                    description: "",
-                  },
-                  {
-                    name: "pnpm",
-                    description: "",
-                  },
-                ];
-              },
+              postProcess: (_out) => [
+                {
+                  name: "npm",
+                  description: "",
+                },
+                {
+                  name: "yarn",
+                  description: "",
+                },
+                {
+                  name: "pnpm",
+                  description: "",
+                },
+              ],
             },
           },
         },

@@ -131,7 +131,7 @@ const completionSpec: Fig.Spec = {
                 name: key,
                 description:
                   descriptionParts.length > 0
-                    ? "Task: " + descriptionParts.join(", ")
+                    ? `Task: ${descriptionParts.join(", ")}`
                     : "Task",
                 icon: turboIcon,
               };

@@ -9,16 +9,15 @@ interface NodejsVersion {
 // Generators
 const versionGenerator: Fig.Generator = {
   script: ["fnm", "list"],
-  postProcess: function (out) {
-    return out
+  postProcess: (out) =>
+    out
       .split("\n")
       .reverse()
       .map((line) => ({
         name: line.slice(2).split(" ")[0],
         displayName: line.slice(2),
         description: `Node.js ${line.slice(2)}`,
-      }));
-  },
+      })),
 };
 
 const NODE_VERSION_REGEX =
@@ -50,7 +49,7 @@ const uniqBy = <T = unknown>(arr: T[], callback: (a: T, b: T) => boolean) =>
  */
 const remoteVersionGenerator: Fig.Generator = {
   script: ["fnm", "list-remote"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const parsed = out
       .split("\n")
       .reverse()

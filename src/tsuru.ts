@@ -9,7 +9,7 @@ const formatTsuruOutput = (output: string) => {
 const tsuruGenerators: Record<string, Fig.Generator> = {
   plans: {
     script: ["tsuru", "plan", "list"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const plans = formatTsuruOutput(out);
       return plans.map((plan) => {
         return { name: plan, description: "Plan" };
@@ -19,7 +19,7 @@ const tsuruGenerators: Record<string, Fig.Generator> = {
 
   teams: {
     script: ["tsuru", "team", "list"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const teams = formatTsuruOutput(out);
       return teams.map((team) => {
         return { name: team, description: "Team" };
@@ -29,7 +29,7 @@ const tsuruGenerators: Record<string, Fig.Generator> = {
 
   apps: {
     script: ["tsuru", "app", "list"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const apps = formatTsuruOutput(out);
       return apps.map((app) => {
         return { name: app, description: "Apps" };
@@ -39,19 +39,18 @@ const tsuruGenerators: Record<string, Fig.Generator> = {
 
   platforms: {
     script: ["tsuru", "platform", "list"],
-    postProcess: function (out) {
-      return out
+    postProcess: (out) =>
+      out
         .split("\n")
         .map((p) => p.replace("- ", ""))
         .map((branch) => {
           return { name: branch, description: "Platform" };
-        });
-    },
+        }),
   },
 
   pools: {
     script: ["tsuru", "pool", "list"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       const pools = formatTsuruOutput(out);
       return pools.map((pool) => {
         return { name: pool, description: "Pool" };

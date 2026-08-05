@@ -1,7 +1,7 @@
 const sessionid: Fig.Generator = {
   script: ["bash", "-c", "cat .nextflow/history | awk '{ print $7 }'"],
   postProcess: (output) => {
-    if (output == "") {
+    if (output === "") {
       return [];
     }
     return output.split("\n").map((sessionid) => {
@@ -16,7 +16,7 @@ const sessionid: Fig.Generator = {
 const runname: Fig.Generator = {
   script: ["bash", "-c", "cat .nextflow/history | awk '{ print $4 }'"],
   postProcess: (output) => {
-    if (output == "") {
+    if (output === "") {
       return [];
     }
     return output.split("\n").map((runname) => {
@@ -32,7 +32,7 @@ const projectname: Fig.Generator = {
     `{ find * -maxdepth 0 -type f -name '*.nf' 2> /dev/null && find $HOME/.nextflow/assets/* -maxdepth 1 -type d | cut -d/ -f6,7 | grep / | grep -v assets; } 2> /dev/null`,
   ],
   postProcess: (output) => {
-    if (output == "") {
+    if (output === "") {
       return [];
     }
     return output.split("\n").map((projectname) => {
@@ -47,7 +47,7 @@ const projectname: Fig.Generator = {
 const dockerimage: Fig.Generator = {
   script: ["bash", "-c", "docker images | cut -w -f 1 | grep -v REPOSITORY"],
   postProcess: (output) => {
-    if (output == "") {
+    if (output === "") {
       return [];
     }
     return output.split("\n").map((dockerimage) => {
@@ -66,7 +66,7 @@ const secretname: Fig.Generator = {
     `grep -o '"name": *"[^"]*"' $HOME/.nextflow/secrets/store.json | grep -o '"[^"]*"$' | tr -d \\"`,
   ],
   postProcess: (output) => {
-    if (output == "") {
+    if (output === "") {
       return [];
     }
     return output.split("\n").map((secretname) => {

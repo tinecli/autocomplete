@@ -25,7 +25,7 @@ const tmuxsessions: Fig.Generator = {
     return output.split("\n").map((project) => {
       return {
         name: project.substring(0, project.indexOf(":")),
-        description: "Tmux Session - " + project,
+        description: `Tmux Session - ${project}`,
       };
     });
   },

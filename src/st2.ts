@@ -448,7 +448,7 @@ const showRulesOption: Fig.Option = {
   description: "Only show rules",
 };
 
-const showTriggerInstancesOption: Fig.Option = {
+const _showTriggerInstancesOption: Fig.Option = {
   name: "--show-trigger-instances",
   description: "Only show trigger instances",
 };
@@ -564,7 +564,7 @@ const nameArgVariadic: Fig.Arg = {
   isVariadic: true,
 };
 
-const valueArg: Fig.Arg = {
+const _valueArg: Fig.Arg = {
   name: "value",
   description: "Value",
 };
@@ -607,7 +607,7 @@ const queryArg: Fig.Arg = {
   description: "Query",
 };
 
-const urlArg: Fig.Arg = {
+const _urlArg: Fig.Arg = {
   name: "url",
   description: "URL",
 };

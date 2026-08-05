@@ -1,12 +1,12 @@
 import {
-  keyValueList,
   filepaths,
+  keyValueList,
   valueList,
 } from "@fig/autocomplete-generators";
 import {
+  dependenciesGenerator,
   npmScriptsGenerator,
   npmSearchGenerator,
-  dependenciesGenerator,
 } from "./npm";
 import { npxSuggestions } from "./npx";
 import { createCLIsGenerator } from "./yarn";
@@ -169,7 +169,7 @@ const sharedPublicParams: Fig.Option[] = [
       description:
         "Parse files with .ext:loader, e.g. --loader .js:jsx. Valid loaders: js, jsx, ts, tsx, json, toml, text, file, wasm, napi",
       generators: keyValueList({
-        keys: loaders.map((loader) => "." + loader),
+        keys: loaders.map((loader) => `.${loader}`),
         values: loaders,
       }),
     },
@@ -661,7 +661,7 @@ const spec: Fig.Spec = {
                   command: "ls",
                   args: [
                     "-1",
-                    `${context.environmentVariables["HOME"]}/.bun-create`,
+                    `${context.environmentVariables.HOME}/.bun-create`,
                   ],
                 });
                 return stdout.split("\n").map((name) => ({
@@ -673,7 +673,7 @@ const spec: Fig.Spec = {
             createCLIsGenerator,
           ],
           loadSpec: async (token) => ({
-            name: "create-" + token,
+            name: `create-${token}`,
             type: "global",
           }),
           isCommand: true,

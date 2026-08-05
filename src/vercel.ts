@@ -1,6 +1,6 @@
-const envVarList: Fig.Generator = {
+const _envVarList: Fig.Generator = {
   script: ["vercel", "env", "ls"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const envList = [];
     for (let i = 4; i < lines.length; i++) {
@@ -13,9 +13,9 @@ const envVarList: Fig.Generator = {
   },
 };
 
-const domainList = {
+const _domainList = {
   script: ["vercel", "domains"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const domainList = [];
     for (let i = 4; i < lines.length; i++) {
@@ -28,9 +28,9 @@ const domainList = {
   },
 };
 
-const teamList: Fig.Generator = {
+const _teamList: Fig.Generator = {
   script: ["vercel", "teams", "list"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const teamList = [];
     for (let i = 3; i < lines.length; i++) {

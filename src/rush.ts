@@ -13,7 +13,7 @@ const projectGenerator: Fig.Generator = {
     "-c",
     "until [[ -f rush.json ]] || [[ $PWD = '/' ]]; do cd ..; done; cat rush.json",
   ],
-  postProcess: function (out: string) {
+  postProcess: (out: string) => {
     const suggestions = [];
 
     try {

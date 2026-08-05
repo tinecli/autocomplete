@@ -1,4 +1,3 @@
-import { filepaths } from "@fig/autocomplete-generators";
 const bwLogo32x32 = "https://bitwarden.com/images/icon_32x32.png";
 
 const completionSpec: Fig.Spec = {

@@ -48,11 +48,10 @@ const completionSpec: Fig.Spec = {
         description: "Plugin to uninstall",
         generators: {
           script: ["hyper", "list"],
-          postProcess: function (out) {
-            return out.split("\n").map((p) => {
+          postProcess: (out) =>
+            out.split("\n").map((p) => {
               return { name: p, description: "Plugin name" };
-            });
-          },
+            }),
         },
       },
     },

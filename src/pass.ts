@@ -6,7 +6,7 @@ const listPasswords: Fig.Generator = {
         "-r",
         "-l",
         "",
-        `${context.environmentVariables["HOME"]}/.password-store`,
+        `${context.environmentVariables.HOME}/.password-store`,
         "--exclude-dir=.git",
       ],
     });
@@ -21,10 +21,7 @@ const listDirectories: Fig.Generator = {
   custom: async (_tokens, executeCommand, context) => {
     const { stdout } = await executeCommand({
       command: "ls",
-      args: [
-        "-dR1a",
-        `${context.environmentVariables["HOME"]}/.password-store`,
-      ],
+      args: ["-dR1a", `${context.environmentVariables.HOME}/.password-store`],
     });
     return stdout.split("\n").map((dir) => ({
       name: dir.split(".password-store/").pop(),

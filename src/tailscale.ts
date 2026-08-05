@@ -5,6 +5,7 @@ type HostsGeneratorOptions = {
 const hostsGenerator = ({ append }: HostsGeneratorOptions = {}) => ({
   script: ["tailscale", "status", "--json"],
   postProcess: (output: string) =>
+    // biome-ignore lint/complexity/useLiteralKeys: bracket access needed to keep these typed as any instead of unknown
     Object.values(JSON.parse(output)["Peer"]).map((peer) => ({
       name: `${peer["DNSName"].split(".")[0]}${append ?? ""}`,
       displayName: peer["HostName"],

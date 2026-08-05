@@ -22,26 +22,24 @@ const commonOptions: Fig.Option[] = [
 
 const importExtGenerator: Fig.Generator = {
   script: ["assimp", "listext"],
-  postProcess: function (out) {
-    return out.split(";").map((ext) => {
+  postProcess: (out) =>
+    out.split(";").map((ext) => {
       return {
         name: ext,
         description: "Extension",
       };
-    });
-  },
+    }),
 };
 
 const exportExtGenerator: Fig.Generator = {
   script: ["assimp", "listexport"],
-  postProcess: function (out) {
-    return out.split("\n").map((ext) => {
+  postProcess: (out) =>
+    out.split("\n").map((ext) => {
       return {
         name: ext,
         description: "Extension",
       };
-    });
-  },
+    }),
 };
 
 const completionSpec: Fig.Spec = {

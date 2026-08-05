@@ -1,6 +1,6 @@
 const dependenciesGenerator: Fig.Generator = {
   script: ["cat", "import_map.json"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     if (out) {
       try {
         const deps = JSON.parse(out);
@@ -16,7 +16,7 @@ const dependenciesGenerator: Fig.Generator = {
 
           return suggestions;
         }
-      } catch (error) {
+      } catch (_error) {
         return [];
       }
     }
@@ -25,7 +25,7 @@ const dependenciesGenerator: Fig.Generator = {
 };
 const scriptsGenerator: Fig.Generator = {
   script: ["cat", "run.json"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     if (out) {
       try {
         const scriptsObj = JSON.parse(out);
@@ -33,7 +33,7 @@ const scriptsGenerator: Fig.Generator = {
         if (scriptsObj.scripts) {
           const scripts = Object.entries(scriptsObj.scripts);
 
-          const suggestions = scripts.map(([name, command]) => ({
+          const suggestions = scripts.map(([name, _command]) => ({
             name: name as string,
             icon: "🚀",
             description: "trex script" as string,
@@ -41,7 +41,7 @@ const scriptsGenerator: Fig.Generator = {
 
           return suggestions;
         }
-      } catch (error) {
+      } catch (_error) {
         return [];
       }
     }

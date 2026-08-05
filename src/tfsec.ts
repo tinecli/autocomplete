@@ -1,11 +1,10 @@
 const workspaceGenerator: Fig.Generator = {
   script: ["terraform", "workspace", "list"],
-  postProcess: function (out) {
-    return out.split("\n").map((workspace) => ({
+  postProcess: (out) =>
+    out.split("\n").map((workspace) => ({
       name: workspace.replace("*", "").trim(),
       description: "Terraform workspaces",
-    }));
-  },
+    })),
 };
 
 const completionSpec: Fig.Spec = {

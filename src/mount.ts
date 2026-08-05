@@ -13,8 +13,8 @@ const completionSpec: Fig.Spec = {
               .trim()
               .split("\n")
               .splice(2, out.length)
-              .map((line) => "/dev/" + line.split(" ").pop())
-              .filter((x) => x != "/dev/")
+              .map((line) => `/dev/${line.split(" ").pop()}`)
+              .filter((x) => x !== "/dev/")
               .map((blk) => {
                 return { name: blk, description: "Block device" };
               });
@@ -26,10 +26,10 @@ const completionSpec: Fig.Spec = {
             return out
               .trim()
               .split("\n")
-              .filter((x) => x.length != 0)
+              .filter((x) => x.length !== 0)
               .map((blk) => {
                 return {
-                  name: "/dev/mapper/" + blk,
+                  name: `/dev/mapper/${blk}`,
                   description: "Mapped block device",
                 };
               });

@@ -11,7 +11,7 @@ const generatePackages: Fig.Generator = {
       .map((path) => {
         const pathArr = path.split("/");
         const subPath = pathArr.slice(
-          pathArr.findIndex((val) => val === "packages") + 1,
+          pathArr.indexOf("packages") + 1,
           pathArr.length - 2
         );
         const version = pathArr[pathArr.length - 2];

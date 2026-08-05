@@ -1,4 +1,5 @@
 import awsRegions from "./regions";
+
 const ttl = 30000;
 const appendFolderPath = (tokens: string[], prefix: string): string[] => {
   const baseLsCommand = ["ls", "-1ApL"];
@@ -34,7 +35,7 @@ const postProcessFiles = (out: string, prefix: string): Fig.Suggestion[] => {
     const dots_arr = [];
     const other_arr = [];
     arr.map((elm) => {
-      if (elm.toLowerCase() == ".ds_store") return;
+      if (elm.toLowerCase() === ".ds_store") return;
       if (elm.slice(0, 1) === ".") dots_arr.push(elm);
       else other_arr.push(elm);
     });
@@ -88,11 +89,11 @@ const generators: Record<string, Fig.Generator> = {
       "--page-size",
       "100",
     ],
-    postProcess: function (out) {
+    postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["SecretList"];
+        const list = JSON.parse(out).SecretList;
         return list.map((item) => ({
-          name: item["Name"],
+          name: item.Name,
         }));
       } catch (error) {
         console.error(error);
@@ -107,11 +108,11 @@ const generators: Record<string, Fig.Generator> = {
     // --page-size does not affect the number of items returned,
     // just chunks request so it won't timeout
     script: ["aws", "kms", "list-keys", "--page-size", "100"],
-    postProcess: function (out) {
+    postProcess: (out) => {
       try {
-        const list = JSON.parse(out)["Keys"];
+        const list = JSON.parse(out).Keys;
         return list.map((item) => ({
-          name: item["KeyId"],
+          name: item.KeyId,
         }));
       } catch (error) {
         console.error(error);
@@ -158,9 +159,9 @@ const generators: Record<string, Fig.Generator> = {
   },
   getReplicaRegionsGenerator: {
     script: ["aws", "kms", "list-keys", "--page-size", "100"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, _tokens) => {
       try {
-        const list = JSON.parse(out)["Keys"];
+        const list = JSON.parse(out).Keys;
         return list.flatMap((secret) => {
           return awsRegions.flatMap((region) => {
             return {
@@ -179,11 +180,11 @@ const generators: Record<string, Fig.Generator> = {
   },
   getLambdasGenerator: {
     script: ["aws", "lambda", "list-functions", "--page-size", "100"],
-    postProcess: function (out, tokens) {
+    postProcess: (out, _tokens) => {
       try {
-        const list = JSON.parse(out)["Functions"];
+        const list = JSON.parse(out).Functions;
         return list.map((item) => ({
-          name: item["FunctionArn"],
+          name: item.FunctionArn,
         }));
       } catch (e) {
         console.log(e);
@@ -195,7 +196,7 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   getVersionIdGenerator: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         // secret-id value
         const idx = tokens.indexOf("--secret-id");
@@ -207,7 +208,7 @@ const generators: Record<string, Fig.Generator> = {
           command: "aws",
           args: ["secretsmanager", "describe-secret", "--secret-id", secretId],
         });
-        const versions = JSON.parse(stdout)["VersionIdsToStages"];
+        const versions = JSON.parse(stdout).VersionIdsToStages;
         return Object.keys(versions).map((elm) => ({ name: elm }));
       } catch (e) {
         console.log(e);
@@ -219,7 +220,7 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   getVersionStageGenerator: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         // secret-id value
         const idx = tokens.indexOf("--secret-id");
@@ -231,7 +232,7 @@ const generators: Record<string, Fig.Generator> = {
           command: "aws",
           args: ["secretsmanager", "describe-secret", "--secret-id", secretId],
         });
-        const versions = JSON.parse(stdout)["VersionIdsToStages"];
+        const versions = JSON.parse(stdout).VersionIdsToStages;
         return Object.keys(versions).map((elm) => ({ name: versions[elm][0] }));
       } catch (e) {
         console.log(e);
@@ -243,7 +244,7 @@ const generators: Record<string, Fig.Generator> = {
     },
   },
   listTagKeys: {
-    custom: async function (tokens, executeShellCommand) {
+    custom: async (tokens, executeShellCommand) => {
       try {
         // secret-id value
         const idx = tokens.indexOf("--secret-id");
@@ -255,8 +256,8 @@ const generators: Record<string, Fig.Generator> = {
           command: "aws",
           args: ["secretsmanager", "describe-secret", "--secret-id", secretId],
         });
-        const versions = JSON.parse(stdout)["Tags"];
-        return versions.map((elm) => ({ name: elm["Key"] }));
+        const versions = JSON.parse(stdout).Tags;
+        return versions.map((elm) => ({ name: elm.Key }));
       } catch (e) {
         console.log(e);
       }
@@ -525,7 +526,7 @@ const completionSpec: Fig.Spec = {
             "The number of days from 7 to 30 that Secrets Manager waits before permanently deleting the secret. You can't use both this parameter and ForceDeleteWithoutRecovery in the same call. If you don't use either, then by default Secrets Manager uses a 30 day recovery window",
           args: {
             name: "long",
-            suggestions: Array.from({ length: 31 - 7 }, (v, k) =>
+            suggestions: Array.from({ length: 31 - 7 }, (_v, k) =>
               String(k + 7)
             ),
           },

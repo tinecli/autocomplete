@@ -1,6 +1,6 @@
 const tests: Fig.Generator = {
   script: ["phpunit", "--list-tests"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     if (out.startsWith("fatal:")) {
       return [];
     }

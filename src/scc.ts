@@ -1,7 +1,7 @@
 import {
-  valueList,
+  type KeyValueSuggestions,
   keyValueList,
-  KeyValueSuggestions,
+  valueList,
 } from "@fig/autocomplete-generators";
 
 /** The output of processing `scc --languages` */

@@ -4,7 +4,7 @@ interface ProjectDetails {
 
 const projectsGenerator = {
   script: ["ng", "config", "projects"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     try {
       const projects = JSON.parse(out);
 
@@ -14,7 +14,7 @@ const projectsGenerator = {
           description: details.projectType,
         })
       );
-    } catch (e) {}
+    } catch (_e) {}
     return [];
   },
 };

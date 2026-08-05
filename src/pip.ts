@@ -1,6 +1,6 @@
 const listPackages: Fig.Generator = {
   script: ["pip", "list"],
-  postProcess: function (out) {
+  postProcess: (out) => {
     const lines = out.split("\n");
     const packages = [];
     for (let i = 2; i < lines.length; i++) {

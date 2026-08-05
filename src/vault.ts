@@ -509,7 +509,7 @@ const vaultMonitorOptions: Fig.Option[] = [
   },
 ];
 
-const vaultAuditEnableOptions: Fig.Option[] = [
+const _vaultAuditEnableOptions: Fig.Option[] = [
   {
     name: "-description",
     description:
@@ -915,7 +915,7 @@ const vaultOperatorConsulOptions: Fig.Option[] = [
   },
 ];
 
-const vaultOperatorAutoUnsealOptions: Fig.Option[] = [
+const _vaultOperatorAutoUnsealOptions: Fig.Option[] = [
   {
     name: "-recovery-pgp-keys",
     description:

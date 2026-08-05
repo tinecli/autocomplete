@@ -1,8 +1,8 @@
 import {
   clangBase,
   stdCPPSuggestions,
-  stdOpenCLCPPSuggestions,
   stdHLSLSuggestions,
+  stdOpenCLCPPSuggestions,
 } from "./clang";
 
 const completionSpec: Fig.Spec = {
