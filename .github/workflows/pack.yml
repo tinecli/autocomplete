@@ -2,12 +2,22 @@ name: Spec pack
 
 # Build the completion specs and publish them as a rolling release asset
 # (fixed tag: `specs`) that tine downloads at runtime — so spec fixes ship
-# without a tine app release. Run from the Actions tab (workflow_dispatch).
+# without a tine app release. Runs automatically on every push to master
+# that touches a spec, and can also be run manually from the Actions tab.
 #
 # tine downloads:
 #   https://github.com/tinecli/autocomplete/releases/download/specs/specs.tar.gz
 on:
+  push:
+    branches: [master]
+    paths:
+      - "src/**"
+      - ".github/workflows/pack.yml"
   workflow_dispatch:
+
+concurrency:
+  group: pack
+  cancel-in-progress: true
 
 permissions:
   contents: write
