@@ -1,15 +1,6 @@
 ---
 blank_issues_enabled: true
 contact_links:
-  - about: "My issue does not relate to a specific completion spec - withfig/fig"
-    name: Other Issue
-    url: "https://github.com/withfig/fig/issues/new/choose"
-  - about: "Find detailed guides about common support issues in our forum"
-    name: "💬  GitHub Discussions"
-    url: "https://github.com/withfig/fig/discussions"
-  - about: "Get instant support from the Fig Community Discord"
-    name: "👋  Discord"
-    url: "https://fig.io/community"
-  - about: "Get support from the Fig team at hello@fig.io"
-    name: "📩  Email"
-    url: "https://tinyurl.com/y4m9zqlw"
+  - about: "Report a bug in the Tine app itself (not a specific completion spec)"
+    name: Tine app issue
+    url: "https://github.com/tinecli/tine/issues/new/choose"

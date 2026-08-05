@@ -1,21 +1,18 @@
 name: Completion Spec Issue
 title: "[CLI_NAME]"
 description: All issues relating to specific CLI tools (e.g. `git`, `kubectl`, `chmod`)
-labels: [NEED_TO_LABEL]
 body:
   - type: checkboxes
     attributes:
       label: Sanity checks
       options:
-        - label: "My issue relates to a specific CLI completion spec (e.g. `git checkout` is missing options in `git` completion spec). If your issue is more general, please create your issue here: [withfig/fig](https://github.com/withfig/fig/issues/new?assignees=&labels=NEED_TO_LABEL&template=main_issue_template.yml)"
+        - label: "My issue relates to a specific CLI completion spec (e.g. `git checkout` is missing options in `git` completion spec)."
           required: true
-        - label: "I have searched [github.com/withfig/autocomplete/issues](https://github.com/withfig/autocomplete/issues?q=) and there are no duplicates of my issue"
+        - label: "I have searched [existing issues](https://github.com/tinecli/autocomplete/issues?q=) and there are no duplicates of my issue"
           required: true
-        - label: "I would like to work on this."
   - type: input
     attributes:
       label: What CLI tool does this relate to?
-      description: "If it relates to all of them, you probably want to create your issue here: [withfig/fig](https://github.com/withfig/fig/issues/new?assignees=&labels=NEED_TO_LABEL&template=main_issue_template.yml)"
       placeholder: "git"
     validations:
       required: true
@@ -34,6 +31,6 @@ body:
     attributes:
       label: Issue Details
       description: Tell us more about the issue
-      placeholder: What subcommands / options / arguments are relevant? If a generator needs to be written, please specifiy the desired output.
+      placeholder: What subcommands / options / arguments are relevant? If a generator needs to be written, please specify the desired output.
     validations:
       required: true
