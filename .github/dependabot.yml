@@ -5,15 +5,13 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 100
-  - package-ecosystem: "npm"
+  # Version updates only — Dependabot has no security updates for bun yet.
+  - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 100
     groups:
-      typescript-eslint:
-        patterns:
-          - "@typescript-eslint/*"
       fig:
         patterns:
           - "@fig/*"

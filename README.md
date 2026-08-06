@@ -23,46 +23,35 @@ release needed.
 
 ## Editing or adding a spec
 
-**Prerequisites:** Node ([`.nvmrc`](.nvmrc) pins the version) and
-[pnpm](https://pnpm.io/installation).
+**Prerequisites:** [Bun](https://bun.com/docs/installation) — `package.json`
+pins the version.
 
 ```bash
 git clone https://github.com/tinecli/autocomplete.git
 cd autocomplete
-pnpm install
+bun install
 
 # Edit an existing spec in src/, or scaffold a new one:
-pnpm create-spec my-cli
+bun run create-spec my-cli
 
 # Dev mode: recompiles on save, generators re-run every keystroke
-pnpm dev
+bun run dev
 ```
 
 Specs are compiled from `src/` to `build/` on save; dev mode reads from
 `build/`.
 
-## Pulling spec updates from upstream
-
-Since most specs originate in withfig/autocomplete, it's often easier to pull
-their updates than to hand-port a change:
-
-```bash
-git remote add upstream https://github.com/withfig/autocomplete.git
-git fetch upstream
-git merge upstream/master
-```
-
 ## Other package.json commands
 
 ```bash
 # Typecheck all specs in src/
-pnpm test
+bun run test
 
 # Compile specs from src/ to build/
-pnpm build
+bun run build
 
 # Lint and fix issues
-pnpm lint:fix
+bun run lint:fix
 ```
 
 ## License

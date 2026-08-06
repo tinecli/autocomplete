@@ -14,7 +14,7 @@ project targets. Single maintainer, no CLA, no contributor program.
   one file per subcommand/service, each `export default`ing a
   `Fig.Subcommand`. The top-level `src/<cli>.ts` references them via
   `loadSpec: "<cli>/<service>"` instead of inlining every subcommand.
-- `build/` — compiled output (gitignored), produced by `pnpm build`
+- `build/` — compiled output (gitignored), produced by `bun run build`
   (`@withfig/autocomplete-tools compile`).
 - `.github/workflows/pack.yml` — on every push to `master` that touches
   `src/**` (and manually via `workflow_dispatch`), builds `src/` → `build/`
@@ -25,16 +25,16 @@ project targets. Single maintainer, no CLA, no contributor program.
 ## Writing or editing a spec
 
 ```bash
-pnpm install
-pnpm create-spec my-cli   # scaffold a new spec
-pnpm dev                  # recompiles on save; generators re-run every keystroke
+bun install
+bun run create-spec my-cli   # scaffold a new spec
+bun run dev                  # recompiles on save; generators re-run every keystroke
 ```
 
 Before opening a PR:
 
 ```bash
-pnpm test       # tsc --noEmit across all of src/
-pnpm lint:fix   # biome check --write (lint + format, one tool)
+bun run test       # tsc --noEmit across all of src/
+bun run lint:fix   # biome check --write (lint + format, one tool)
 ```
 
 ### Conventions that aren't obvious from one file
@@ -58,10 +58,6 @@ pnpm lint:fix   # biome check --write (lint + format, one tool)
 - **Multi-word CLIs that fragment into a directory** (`aws`, `gcloud`, `az`)
   get updated per-service, in `src/<cli>/<service>.ts` — don't add new
   subcommands to a giant single file once a CLI has outgrown one.
-- Pulling a newer version of an existing spec from upstream is usually
-  easier than hand-porting: `git remote add upstream
-  https://github.com/withfig/autocomplete.git && git fetch upstream && git
-  merge upstream/master`.
 
 ## Branch naming
 
@@ -79,8 +75,8 @@ Prefix every branch by what it changes:
    push to `master` except discipline.
 2. Branch off current `origin/master`, name it per the prefix convention
    above.
-3. Run `pnpm test` and `pnpm lint` before pushing — both are required CI
-   checks (`.github/workflows/typecheck.yml`, `lint.yml`).
+3. Run `bun run test` and `bun run lint` before pushing — both are required CI
+   checks (`.github/workflows/checks.yml`).
 4. Push and open a PR with `gh pr create`; don't push directly to `master`.
 5. Merging to `master` is sufficient to ship a spec fix to tine — no
    additional release step needed (see `pack.yml` above).
