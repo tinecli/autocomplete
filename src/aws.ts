@@ -1,17 +1,21 @@
+const AWS_CONFIG_FILES =
+  'cat "${AWS_CONFIG_FILE:-$HOME/.aws/config}" ' +
+  '"${AWS_SHARED_CREDENTIALS_FILE:-$HOME/.aws/credentials}" 2>/dev/null';
+const NON_PROFILE_SECTIONS = ["sso-session", "services", "plugins", "preview"];
 export const awsProfileGenerator: Fig.Generator = {
-  cache: {
-    strategy: "stale-while-revalidate",
-    cacheByDirectory: true,
-  },
-  script: ["aws", "configure", "list-profiles"],
+  cache: { strategy: "stale-while-revalidate", cacheByDirectory: true },
+  script: ["sh", "-c", AWS_CONFIG_FILES],
   postProcess: (out) => {
-    if (out.trim() === "") {
-      return [];
+    const names = new Set<string>();
+    for (const line of out.split("\n")) {
+      const header = line.trim().match(/^\[\s*(.+?)\s*\]/);
+      if (!header) continue;
+      const section = header[1];
+      if (NON_PROFILE_SECTIONS.some((kind) => section.startsWith(`${kind} `)))
+        continue;
+      names.add(section.replace(/^profile\s+/, ""));
     }
-    return out.split("\n").map((line) => ({
-      name: line,
-      icon: "👤",
-    }));
+    return [...names].map((name) => ({ name, icon: "👤" }));
   },
 };
 const completionSpec: Fig.Spec = {
