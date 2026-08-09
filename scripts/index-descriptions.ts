@@ -14,8 +14,8 @@ const tilePath = (name: string) =>
     : resolve(build, name, "index.js");
 
 const rootDescription = async (name: string) => {
-  const tile = await import(tilePath(name));
-  const description = tile.default?.description;
+  const tile = await import(tilePath(name)).catch(() => undefined);
+  const description = tile?.default?.description;
   return typeof description === "string" ? description : undefined;
 };
 
