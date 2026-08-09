@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "simctl",
-  description: "",
+  description: "Control the iOS Simulator from the command line",
   subcommands: [
     {
       name: "addmedia",

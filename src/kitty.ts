@@ -171,6 +171,7 @@ const plusCommands: Fig.Subcommand[] = [
 
 const completionSpec: Fig.Spec = {
   name: "kitty",
+  description: "Fast, feature-rich, GPU-based terminal emulator",
   options: [
     {
       name: ["-T", "--title"],

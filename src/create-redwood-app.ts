@@ -1,5 +1,6 @@
 const spec: Fig.Spec = {
   name: "create-redwood-app",
+  description: "Create a RedwoodJS app",
   icon: "https://avatars.githubusercontent.com/u/45050444?s=48&v=4",
   args: {
     name: "projectName",

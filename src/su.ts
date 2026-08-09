@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "su",
-  description: "",
+  description: "Substitute user identity",
   options: [
     {
       name: "-f",

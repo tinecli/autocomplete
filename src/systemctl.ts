@@ -113,7 +113,7 @@ const unitFileGenerator: Fig.Generator = {
 
 const completionSpec: Fig.Spec = {
   name: "systemctl",
-  description: "",
+  description: "Control the systemd system and service manager",
   subcommands: [
     {
       name: "list-units",

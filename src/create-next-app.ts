@@ -2,6 +2,7 @@
 
 const completionSpec: Fig.Spec = {
   name: "create-next-app",
+  description: "Create a Next.js app",
   icon: "https://nextjs.org/static/favicon/favicon-16x16.png",
   options: [
     {

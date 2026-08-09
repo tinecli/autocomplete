@@ -2,6 +2,7 @@
 
 const completionSpec: Fig.Spec = {
   name: "babel",
+  description: "Compiler for writing next generation JavaScript",
   icon: "https://raw.githubusercontent.com/babel/logo/master/babel.png",
   options: [
     {

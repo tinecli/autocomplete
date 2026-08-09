@@ -15,6 +15,7 @@ const hostsGenerator = ({ append }: HostsGeneratorOptions = {}) => ({
 
 const spec: Fig.Spec = {
   name: "tailscale",
+  description: "Manage your Tailscale WireGuard network",
   subcommands: [
     {
       name: "up",

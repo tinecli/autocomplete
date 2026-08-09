@@ -1,5 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "ibus",
+  description: "Intelligent input bus for Linux",
   subcommands: [
     {
       name: "engine",

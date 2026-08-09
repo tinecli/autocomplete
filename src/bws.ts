@@ -2,6 +2,7 @@ const bwLogo32x32 = "https://bitwarden.com/images/icon_32x32.png";
 
 const completionSpec: Fig.Spec = {
   name: "bws",
+  description: "Command-line interface for Bitwarden Secrets Manager",
   subcommands: [
     {
       name: "config",

@@ -2,7 +2,7 @@ import { configHosts, knownHosts } from "./ssh";
 
 const completionSpec: Fig.Spec = {
   name: "mosh",
-  description: "",
+  description: "Mobile shell with roaming and intelligent local echo",
   args: {
     name: "user@hostname",
     description: "Address of remote machine to log into",

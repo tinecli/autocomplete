@@ -21,7 +21,7 @@ const format: Fig.Option = {
 
 const completionSpec: Fig.Spec = {
   name: "oh-my-posh",
-  description: "",
+  description: "Prompt theme engine for any shell",
   subcommands: [
     {
       name: "init",

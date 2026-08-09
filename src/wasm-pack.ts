@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "wasm-pack",
-  description: "",
+  description: "Build and publish Rust-generated WebAssembly packages",
   subcommands: [
     {
       name: "build",

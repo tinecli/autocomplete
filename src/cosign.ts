@@ -1,6 +1,7 @@
 const completionSpec: Fig.Spec = {
   name: "cosign",
-  description: "",
+  description:
+    "Container signing, verification, and storage in an OCI registry",
   subcommands: [
     {
       name: "attach",
