@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "sfdx",
-  description: "",
+  description: "Salesforce developer command-line interface",
   subcommands: [
     {
       name: "force:lightning:lint",

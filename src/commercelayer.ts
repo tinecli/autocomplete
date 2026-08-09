@@ -4,6 +4,7 @@
 
 const completionSpec: Fig.Spec = {
   name: "@commercelayer/cli",
+  description: "Command-line interface for Commerce Layer",
   subcommands: [
     {
       name: [

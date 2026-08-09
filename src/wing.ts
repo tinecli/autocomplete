@@ -1,5 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "wing",
+  description: "Command-line interface for the Wing programming language",
   subcommands: [
     {
       name: "run",

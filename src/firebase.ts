@@ -12,7 +12,7 @@ const projectAliasesGenerator: Fig.Generator = {
 
 const completionSpec: Fig.Spec = {
   name: "firebase",
-  description: "",
+  description: "Command-line interface for Firebase",
   subcommands: [
     {
       name: "appdistribution:distribute",

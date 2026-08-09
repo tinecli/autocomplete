@@ -217,7 +217,7 @@ globalOptions = globalOptions.map((option) => ({
 
 const completionSpec: Fig.Spec = {
   name: "argo",
-  description: "",
+  description: "Command-line client for Argo Workflows on Kubernetes",
   subcommands: [
     {
       name: "archive",

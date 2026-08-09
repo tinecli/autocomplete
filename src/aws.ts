@@ -20,6 +20,7 @@ export const awsProfileGenerator: Fig.Generator = {
 };
 const completionSpec: Fig.Spec = {
   name: "aws",
+  description: "Unified tool to manage your AWS services",
   options: [
     {
       name: "--profile",

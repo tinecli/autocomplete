@@ -1,5 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "pytest",
+  description: "Testing framework for Python",
   args: {
     name: "File or Directory",
     description:

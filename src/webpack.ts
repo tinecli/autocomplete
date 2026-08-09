@@ -17,7 +17,7 @@ const WebpackConfigFileArgument: Fig.SingleOrArray<Fig.Arg> = [
 
 const completionSpec: Fig.Spec = {
   name: "webpack",
-  description: "",
+  description: "Module bundler for JavaScript applications",
   subcommands: [
     {
       name: ["build", "bundle", "b"],

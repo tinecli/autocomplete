@@ -205,6 +205,7 @@ const zoxideCompletionSpec: Fig.Spec = {
 
 const zCompletionSpec: Fig.Spec = {
   name: "z",
+  description: "Jump to a frequently used directory",
   generateSpec: async (_, executeShellCommand) => {
     // Assume if zoxide is installed, use that completion spec
     try {

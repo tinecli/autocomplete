@@ -1,5 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "pgcli",
+  description: "Postgres client with autocompletion and syntax highlighting",
   args: {
     name: "database_name or db_url",
   },

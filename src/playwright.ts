@@ -48,7 +48,7 @@ const helpOption: Fig.Option = {
 
 const completionSpec: Fig.Spec = {
   name: "playwright",
-  description: "",
+  description: "Run Playwright end-to-end browser tests",
   subcommands: [
     {
       name: "test",

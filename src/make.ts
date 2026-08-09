@@ -73,6 +73,7 @@ const listTargets: Fig.Generator = {
 
 const completionSpec: Fig.Spec = {
   name: "make",
+  description: "GNU make utility to maintain groups of programs",
   args: {
     name: "target",
     generators: listTargets,

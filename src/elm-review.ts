@@ -17,7 +17,7 @@ const reportType = [
  */
 const completionSpec: Fig.Spec = {
   name: "elm-review",
-  description: "",
+  description: "Analyze Elm projects to find mistakes and enforce conventions",
   subcommands: [
     {
       name: "init",

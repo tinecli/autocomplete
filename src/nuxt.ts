@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "nuxt",
-  description: "",
+  description: "Build and run Nuxt applications",
   subcommands: [
     { name: "dev", description: "Launch the development server" },
     {

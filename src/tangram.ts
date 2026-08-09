@@ -1,6 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "tangram",
-  description: "",
+  description: "Train and deploy machine learning models",
   subcommands: [
     {
       name: "app",

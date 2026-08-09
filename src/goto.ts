@@ -24,6 +24,7 @@ const listTargets: Fig.Generator = {
 
 const completionSpec: Fig.Spec = {
   name: "goto",
+  description: "Change to a directory by alias",
   displayName: "Goto a Folder by alias",
   options: [
     {

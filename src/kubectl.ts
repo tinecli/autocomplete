@@ -323,7 +323,7 @@ const sharedOptsArray = Object.values(sharedOpts);
 
 const completionSpec: Fig.Spec = {
   name: "kubectl",
-  description: "",
+  description: "Control the Kubernetes cluster manager",
   subcommands: [
     {
       name: "alpha",

@@ -2,6 +2,7 @@ import { npxSuggestions } from "./npx";
 
 const bunx: Fig.Spec = {
   name: "bunx",
+  description: "Execute an npm package binary with Bun",
   args: {
     name: "command",
     isCommand: true,

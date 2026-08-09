@@ -1,5 +1,6 @@
 const completionSpec: Fig.Spec = {
   name: "create-remix",
+  description: "Create a Remix app",
   icon: "https://remix.run/favicon-light.1.png",
   options: [
     {

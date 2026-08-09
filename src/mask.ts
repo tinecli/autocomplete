@@ -4,6 +4,7 @@
 // The below is a dummy example for git. Make sure to change the file name!
 const completionSpec: Fig.Spec = {
   name: "mask",
+  description: "Task runner defined by a markdown file",
   generateSpec: async (tokens, executeShellCommand) => {
     // See if use specified a maskfile location
 
