@@ -22,6 +22,7 @@ const completionSpec: Fig.Spec = {
         name: "toggle",
         description: "Switch between noise cancellation and transparency",
       },
+      { name: "status", description: "Print the current mode" },
     ],
   },
   options: [
