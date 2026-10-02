@@ -1,14 +1,9 @@
 const programGenerator: Fig.Generator = {
-  script: [
-    "bash",
-    "-c",
-    `for i in $(echo $PATH | tr ":" "\n"); do find $i -maxdepth 1 -perm -111 -type f; done`,
-  ],
+  script: ["bash", "-c", "compgen -c"],
   postProcess: (out) =>
-    out
-      .split("\n")
-      .map((path) => path.split("/")[path.split("/").length - 1])
-      .map((pr) => ({ name: pr, description: "Executable file", type: "arg" })),
+    [...new Set(out.split("\n"))]
+      .filter(Boolean)
+      .map((name) => ({ name, description: "Command", type: "arg" })),
 };
 
 const completionSpec: Fig.Spec = {
