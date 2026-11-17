@@ -37,6 +37,11 @@ const aliases: Fig.Generator = {
     ),
 };
 
+const varKeys: Fig.Generator = {
+  script: ["wt", "config", "state", "vars", "list"],
+  postProcess: parseCompletions,
+};
+
 const branchOption: Fig.Arg = { name: "branch", generators: dynamic };
 
 const target: Fig.Arg = {
@@ -202,7 +207,7 @@ const completionSpec: Fig.Spec = {
         {
           name: ["-x", "--execute"],
           description: "Program to run after switch",
-          args: { name: "execute", isCommand: true },
+          args: { name: "program" },
         },
         { name: "--clobber", description: "Remove stale paths at target" },
         {
@@ -440,7 +445,7 @@ const completionSpec: Fig.Spec = {
             {
               name: "--",
               description: "Command template (see --help for all variables)",
-              args: { name: "args", isVariadic: true },
+              args: { name: "args", isVariadic: true, isCommand: true },
             },
           ],
         },
@@ -893,7 +898,11 @@ const completionSpec: Fig.Spec = {
                   name: "get",
                   description: "Get a value",
                   options: [targetBranch],
-                  args: { name: "key", description: "Key name" },
+                  args: {
+                    name: "key",
+                    description: "Key name",
+                    generators: varKeys,
+                  },
                 },
                 {
                   name: "list",
@@ -920,6 +929,7 @@ const completionSpec: Fig.Spec = {
                     name: "key",
                     description: "Key to clear (required unless --all)",
                     isOptional: true,
+                    generators: varKeys,
                   },
                 },
               ],
